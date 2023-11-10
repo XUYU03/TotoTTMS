@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="x-admin-sm">
+<head>
+  <meta charset="UTF-8">
+  <title>Toto剧院管理系统-注册</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=1,target-densitydpi=low-dpi" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="../css/login.css">
+  <script type="text/javascript" src="../js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    $(function () {
+    })
+  </script>
+</head>
+<body class="login-bg">
+<div class="login layui-anim layui-anim-up" style="max-width: 30%; margin: auto;padding-bottom:10px" >
+  <div style="text-align:center"><img src="../images/logo/totologo1.png" width="230px"><br><br></div>
+  <div class="message" style="font-size:20px">Toto剧院票务管理系统</div>
+  <div id="darkbannerwrap"></div>
+
+  <form method="post" class="layui-form" action="../RegisterServlet">
+    <input type="text" name="username" placeholder="姓名" value="" class="layui-input" >
+    <hr class="hr15">
+    <input type="text" name="gender" placeholder="性别：0/1" value="" class="layui-input" >
+    <hr class="hr15">
+    <input type="text" name="telem" placeholder="注册电话" value="" class="layui-input">
+    <hr class="hr15">
+    <div class="layui-inline">
+      <input type="text" name="email" placeholder="注册邮箱" value="" class="layui-input" style="width: 200px;">
+<!--      验证码-->
+<!--      <input type="text" name="verfi" placeholder="验证码" value="" class="layui-input" style="width: 80px;">-->
+      <button class="layui-btn" id="submit_email" style="width: 70px; height: 45px; border: 0;background: #438eb9; color: #ffffff;">提交</button>
+    </div>
+    <hr class="hr15">
+    <input type="text" name="u_id" placeholder="注册账户名" value="" class="layui-input">
+    <hr class="hr15">
+    <input type="password" name="password" placeholder="密码" value="" class="layui-input">
+    <hr class="hr15">
+    <input type="password" name="password_confirm" placeholder="确认密码" value="" class="layui-input">
+    <hr class="hr15">
+    <input type="password" name="pay_pwd" placeholder="设置支付密码" value="" class="layui-input">
+    <hr class="hr15">
+      <input type="submit" value="注册" style="font-size:18px;width:100%;">
+    <hr class="hr15">
+    <input type="button" value="登录" style="font-size:18px;width:100%;" onclick="location.href='login.html'">
+
+  </form>
+</div>
+</body>
+</html>

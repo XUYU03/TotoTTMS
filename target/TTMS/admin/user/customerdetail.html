@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Toto剧院管理系统-用户管理</title>
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+  <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+  <script src="../../js/jquery-2.1.3.min.js"></script>
+  <script src="../../js/bootstrap.min.js"></script>
+  <style type="text/css">
+    a, a:hover, a:focus{
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+    .panel-group {
+      background-color: #438EB9;
+      margin-top:5px;
+      /*
+      width: 250px;
+      height: 100%;
+      position: fixed;
+      overflow-y: auto;
+      */
+    }
+    .panel-group .panel {
+      background-color: #438EB9;
+      border: none;
+    }
+    .panel-default>.panel-heading {
+      border: none;
+      color: #FFFFFF;
+      background-color: #62A8D1;
+    }
+    .panel-group .panel-heading+.panel-collapse>.panel-body {
+      border: none;
+    }
+    .panel-body {
+      padding: 0px 0px;
+    }
+    .nav {
+      margin-left: 0px;
+    }
+    .nav>li>a:hover, .nav>li>a:focus {
+      background-color: #336699;
+    }
+  </style>
+  <script>
+    UrlParm = function() { // url参数
+      var data, index;
+      (function init() {
+        data = [];
+        index = {};
+        var u = window.location.search.substr(1);
+        if (u != '') {
+          var parms = decodeURIComponent(u).split('&');
+          for (var i = 0, len = parms.length; i < len; i++) {
+            if (parms[i] != '') {
+              var p = parms[i].split("=");
+              if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=
+                data.push([ '' ]);
+                index[p[0]] = data.length - 1;
+              } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =
+                data[0] = [ p[1] ];
+              } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa
+                data.push([ p[1] ]);
+                index[p[0]] = data.length - 1;
+              } else {// c=aaa
+                data[index[p[0]]].push(p[1]);
+              }
+            }
+          }
+        }
+      })();
+      return {
+        // 获得参数
+        parm : function(o) { // o: 参数名或者参数次序
+          try {
+            return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);
+          } catch (e) {
+          }
+        },
+        //获得参数组, 类似request.getParameterValues()
+        parmValues : function(o) { //  o: 参数名或者参数次序
+          try {
+            return (typeof (o) == 'number' ? data[o] : data[index[o]]);
+          } catch (e) {
+          }
+        },
+        //是否含有parmName参数
+        hasParm : function(parmName) {
+          return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;
+        },
+        // 获得参数Map ,类似request.getParameterMap()
+        parmMap : function() {
+          var map = {};
+          try {
+            for ( var p in index) {
+              map[p] = data[index[p]];
+            }
+          } catch (e) {
+          }
+          return map;
+        }
+      }
+    }();
+
+    // 该语句定义了一个名为 init 的函数。在函数中，通过 jQuery 库选取 id 为linkcustomer 的元素
+    // ，将其背景颜色修改为 #336699；同时将 id 为 sub2 的元素的 class 属性设置为 'collapse panel-collapse in'
+    // 。接下来，从 URL 参数中获取 type 值，并将其赋值到 id 为 type 的元素的 value 属性中。
+    // 如果 type 为 "update"，则从 URL 参数中获取顾客的各项信息，
+    // 并分别将它们填写到对应 id 的元素的 value 属性中。最后，这个函数没有返回值，而是在页面加载时自动执行。
+    function init() {
+
+      $("#linkcustomer").css("background-color","#336699");
+      $("#sub2").attr("class","collapse panel-collapse in");
+      var type = UrlParm.parm("type");
+      document.getElementById("type").value = type;
+      if(type=="update"){
+        var cus_id = UrlParm.parm("cus_id");
+        var cus_name = UrlParm.parm("cus_name");
+        var cus_gender = UrlParm.parm("cus_gender");
+        var cus_telnum = UrlParm.parm("cus_telnum");
+        var cus_email = UrlParm.parm("cus_email");
+        var cus_uid = UrlParm.parm("cus_uid");
+        var cus_pwd = UrlParm.parm("cus_pwd");
+        var cus_status = UrlParm.parm("cus_status");
+        var cus_balance = UrlParm.parm("cus_balance");
+        var cus_paypwd = UrlParm.parm("cus_paypwd");
+        document.getElementById("cus_id").value = cus_id;
+        document.getElementById("cus_name").value = cus_name;
+        document.getElementById("cus_gender").value = cus_gender;
+        document.getElementById("cus_telnum").value = cus_telnum;
+        document.getElementById("cus_email").value = cus_email;
+        document.getElementById("cus_uid").value = cus_uid;
+        document.getElementById("cus_pwd").value = cus_pwd;
+        document.getElementById("cus_status").value = cus_status;
+        document.getElementById("cus_balance").value = cus_balance;
+        document.getElementById("cus_paypwd").value = cus_paypwd;
+      }
+    }
+
+    function check() {
+      var form = document.getElementById("myform");
+      if(form.cus_name.value == ""  || form.cus_email.value == "" || form.cus_uid.value == "" || form.cus_pwd.value == ""  || form.cus_balance.value == "" || form.cus_paypwd.value == "") {
+        alert("请填写完整信息");
+        return;
+      }
+      if(isNaN(form.cus_gender.value) || isNaN(form.cus_status.value) || isNaN(form.cus_balance.value)){
+        alert("性别、状态和余额应是数字！");
+        return;
+      }
+      var url = "../../CustomerServlet";
+      if (window.XMLHttpRequest)
+        req = new XMLHttpRequest();
+      else if (window.ActiveXObject)
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+      if (req) {
+        //采用POST方式，异步传输
+        req.open("post", url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.onreadystatechange = checkComplete;
+        var data = "type=" + form.type.value
+                + "&cus_id=" + form.cus_id.value
+                + "&cus_name=" + encodeURIComponent(form.cus_name.value)
+                + "&cus_gender=" + form.cus_gender.value
+                + "&cus_telnum=" + encodeURIComponent(form.cus_telnum.value)
+                + "&cus_email=" + encodeURIComponent(form.cus_email.value)
+                + "&cus_uid=" + encodeURIComponent(form.cus_uid.value)
+                + "&cus_pwd=" + encodeURIComponent(form.cus_pwd.value)
+                + "&cus_balance=" + encodeURIComponent(form.cus_balance.value)
+                + "&cus_status=" + form.cus_status.value
+                + "&cus_paypwd=" + encodeURIComponent(form.cus_paypwd.value);
+        req.send(data);
+      }
+    }
+
+    function checkComplete() {
+      if (req.readyState === 4 && req.status === 200) {
+        alert(req.responseText);
+      }
+    }
+  </script>
+</head>
+
+
+<body onload="init()">
+<!-- 上部banner -->
+<div id="navbar" class="navbar">
+  <div class="navbar-container ace-save-state" id="navbar-container">
+    <!-- 左边标题 -->
+    <div class="navbar-header pull-left">
+      <a href="../../customer/index.html" class="navbar-brand">
+        <small>
+          <span class="glyphicon glyphicon-film"></span>&nbsp;Toto剧院管理系统</small>
+      </a>
+    </div>
+    <!-- 右边个人设置 -->
+    <div class="navbar-buttons navbar-header pull-right" role="navigation">
+      <ul class="nav ace-nav">
+        <li class="light-blue dropdown-modal">
+          <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+            <img class="nav-user-photo" src="../../images/admin.png" alt="admin's Photo" />
+            <span class="user-info">欢迎,<br>管理员</span>
+            <i class="ace-icon fa fa-caret-down"></i>
+          </a>
+          <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+            <li><a href="#"><i class="ace-icon fa fa-cog"></i>设置</a></li>
+            <li><a href="#"><i class="ace-icon fa fa-user"></i>个人信息</a></li>
+            <li class="divider"></li>
+            <li><a href="../../customer/index.html"><i class="ace-icon fa fa-power-off"></i>退出</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 下部内容 -->
+<div class="row">
+
+  <!-- 左导航栏 -->
+  <div class="col-md-2">
+    <div class="panel-group" id="panelContainer">
+      <!-- 导航栏1 -->
+      <div class="panel panel-default">
+        <!-- 加入data-toggle="collapse"后可点击折叠 -->
+        <div id="header1" class="panel-heading" data-toggle="collapse" data-target="#sub1" data-parent="#panelContainer">
+          <i class="glyphicon glyphicon-leaf"></i>
+          <a href="#">剧院管理</a>
+          <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+        </div>
+        <div id="sub1" class="collapse panel-collapse">
+          <div class="panel-body">
+            <ul class="nav">
+              <li>
+                <a id="linkstudio" href="../studio/studio.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>演出厅管理
+                </a>
+              </li>
+              <li>
+                <a id="linkplay" href="../studio/play.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>剧目管理
+                </a>
+              </li>
+              <li>
+                <a id="linksched" href="../studio/schedule.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>演出计划
+                </a>
+              </li>
+              <li>
+                <a id="linkcheck" href="../studio/ticket.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>验票管理
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 导航栏2 -->
+      <div class="panel panel-default">
+        <!-- 加入data-toggle="collapse"后可点击折叠 -->
+        <div id="header2" class="panel-heading" data-toggle="collapse" data-target="#sub2" data-parent="#panelContainer">
+          <i class="glyphicon glyphicon-user"></i>
+          <a href="#">用户管理</a>
+          <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+        </div>
+        <div id="sub2" class="collapse panel-collapse">
+          <div class="panel-body">
+            <ul class="nav">
+              <li>
+                <a id="linkcustomer" href="../user/customer.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>观众管理
+                </a>
+              </li>
+              <li>
+                <a id="linkemp" href="../user/employee.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>员工管理
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 导航栏3 -->
+      <div class="panel panel-default">
+        <!-- 加入data-toggle="collapse"后可点击折叠 -->
+        <div id="header3" class="panel-heading" data-toggle="collapse" data-target="#sub3" data-parent="#panelContainer">
+          <i class="glyphicon glyphicon-tasks"></i>
+          <a href="#">票务管理</a>
+          <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+        </div>
+        <div id="sub3" class="collapse panel-collapse">
+          <div class="panel-body">
+            <ul class="nav">
+              <li>
+                <a id="linksale" href="../ticket/Sales.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>售票管理
+                </a>
+              </li>
+              <li>
+                <a id="linkrefund" href="../ticket/Refund.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>退票管理
+                </a>
+              </li>
+              <li>
+                <a id="linkstat" href="../ticket/Statistics.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>销售统计
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 导航栏4 -->
+      <div class="panel panel-default">
+        <!-- 加入data-toggle="collapse"后可点击折叠 -->
+        <div id="header4" class="panel-heading" data-toggle="collapse" data-target="#sub4" data-parent="#panelContainer">
+          <i class="glyphicon glyphicon-tasks"></i>
+          <a href="#">财务管理</a>
+          <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+        </div>
+        <div id="sub4" class="collapse panel-collapse">
+          <div class="panel-body">
+            <ul class="nav">
+              <li>
+                <a id="linksaleticket" href="../finance/SaleItem.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>票款管理
+                </a>
+              </li>
+              <li>
+                <a id="linksaleachi" href="../finance/SalesAchi.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>销售业绩
+                </a>
+              </li>
+              <li>
+                <a id="linksalestat" href="../finance/SalesStat.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>销售统计
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 导航栏5 -->
+      <div class="panel panel-default">
+        <!-- 加入data-toggle="collapse"后可点击折叠 -->
+        <div id="header5" class="panel-heading" data-toggle="collapse" data-target="#sub5" data-parent="#panelContainer">
+          <i class="glyphicon glyphicon-tasks"></i>
+          <a href="#">权限管理</a>
+          <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+        </div>
+        <div id="sub5" class="collapse panel-collapse">
+          <div class="panel-body">
+            <ul class="nav">
+              <li>
+                <a id="linkresource" href="../authority/resource.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>资源管理
+                </a>
+              </li>
+              <li>
+                <a id="linkrole" href="../authority/role.html" style="padding-left:30px;">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>角色管理
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!--右侧内容部分-->
+  <div class="col-md-9" style="margin-left:5px;">
+    <div style="margin:5px 0px 10px 0px;">用户管理 > 观众管理</div>
+    <!-- 增加员工信息 -->
+    <form id="myform" class="form-horizontal" role="form" action="#"
+          method="post">
+      <input type="hidden" id="type" name="type">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">编号</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_id"
+                 id="cus_id" disabled="disabled">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">姓名</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_name"
+                 id="cus_name" placeholder="请输入观众名称">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">性别</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_gender"
+                 id="cus_gender" placeholder="请输入观众性别">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">电话</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_telnum"
+                 id="cus_telnum" placeholder="请输入观众电话">
+        </div>
+      </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label">邮箱</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" name="cus_email"
+               id="cus_email" placeholder="请输入观众邮箱">
+      </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">账号</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_uid"
+                 id="cus_uid" placeholder="请输入观众账号">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_pwd"
+                 id="cus_pwd" placeholder="请输入密码">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">账户余额</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_balance"
+                 id="cus_balance" placeholder="请输入观众余额">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">状态</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_status"
+                 id="cus_status" placeholder="请输入账户状态">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">支付密码</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cus_paypwd"
+                 id="cus_paypwd" placeholder="请输入支付密码">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-2 control-label"
+             style="color: red; font-weight: bold;"></div>
+        <div class="col-sm-6">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-primary" onclick="check()">提
+            交</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-warning"
+                  onclick="javascript:window.location='customer.html'">返 回</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>通讯系统</title>
+  <style>
+    /* 在这里添加 CSS 样式 */
+  </style>
+</head>
+<body>
+<h1>通讯系统</h1>
+<form id="message-form">
+  <label for="recipient">收件人：</label>
+  <input type="text" id="recipient" name="recipient">
+  <br>
+  <label for="message">信息内容：</label>
+  <textarea id="message" name="message"></textarea>
+  <br>
+  <button type="submit">发送</button>
+</form>
+
+<script>
+  // 在这里添加 JavaScript 代码
+  document.getElementById('message-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    // 获取表单数据
+    var recipient = document.getElementById('recipient').value;
+    var message = document.getElementById('message').value;
+    // 发送信息
+    sendMessage(recipient, message);
+  });
+
+  function sendMessage(recipient, message) {
+    // 在这里实现发送信息的逻辑
+    console.log('发送信息给 ' + recipient + ': ' + message);
+  }
+</script>
+</body>
+</html>

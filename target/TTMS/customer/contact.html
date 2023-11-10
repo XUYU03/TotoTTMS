@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>汉唐剧院管理系统-联系我们</title>
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/slick.css">
+    <link rel="stylesheet" href="../css/slicknav.css" >
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
+</head>
+<body class="contact-template">
+<header id="site-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2" style="margin:5px">
+            <a href="index.html"><img src="../images/logo.png" width="127" height="48"/></a>
+            </div>
+            <div class="col-md-5 col-sm-8">
+                <nav id="site-nav" class="nav navbar-default">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="board.html">榜单</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                        <li><a href="login.jsp">登陆</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<div id="site-banner" class="text-center clearfix">
+    <div class="container">
+        <h1 class="title wow slideInLeft">联系我们</h1>
+    </div>
+</div>
+<div id="contact-page" class="contact-page-var-one">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="contact-form-wrapper">
+                    <h3 class="entry-title">联系我们</h3>
+                    <div class="contents">
+                        <p>您可以发送建议给我，我们会即时联系您。</p>
+                    </div>
+                    <form action="form-handler.php" method="post" class="contact-form">
+                        <p class="form-author common">
+                            <input id="author" name="name" type="text" placeholder="姓名 *" aria-required="true" required="required">
+                        </p>
+                        <p class="form-email common">
+                            <input id="email" name="email" type="text" placeholder="电子邮件 *" aria-describedby="email-notes" aria-required="true" required="required">
+                        </p>
+                        <p class="form-phone common">
+                            <input id="phone" name="phone" type="text" placeholder="电话 *" aria-required="true" required="required" >
+                        </p>
+                        <p class="form-subject common">
+                            <input id="subject" name="subject" type="text" placeholder="主题" aria-required="true" required="required">
+                        </p>
+                        <p class="form-comment">
+                            <textarea id="message" name="message" placeholder="意见与建议" cols="45" rows="4" aria-required="true" required="required"></textarea>
+                        </p>
+                        <p class="form-submit">
+                            <button type="submit" id="submit-button" class="submit-btn btn btn-primary btn-lg" data-hover="发送">发送</button>
+                        </p>
+                        <div id="error-container"></div>
+                        <div id="message-container"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="contact-page-contents clearfix">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <i class="fa fa-map-marker"></i>
+                            <div class="contents">
+                                <h6 class="title">邮寄地址</h6>
+                                <address> 西安市长安区西长安街618号东区计算机学院</address>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <i class="fa fa-phone"></i>
+                            <div class="contents">
+                                <h5 class="title">联系方式</h5>
+                                <ul>
+                                    <li>电话: 029-88166712</li>
+                                    <li>邮箱: shuxf@xiyou.edu.cn</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="map-canvas"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#top" id="scroll-top"><i class="fa fa-angle-up"></i></a>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.form.min.js"></script>
+<script src="../js/jquery.validate.min.js"></script>
+<script src="../js/theme.js"></script>
+</body>
+</html>

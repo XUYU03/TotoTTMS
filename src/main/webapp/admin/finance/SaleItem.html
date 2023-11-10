@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Toto剧院管理系统-剧目管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/ace.min.css" />
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <script src="../../js/jquery-2.1.3.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        /*设置链接文字颜色，取消下划线*/
+        a, a:hover, a:focus{
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        /*设置右部导航条背景色、宽度、高度*/
+        .panel-group {
+            background-color: #438EB9;
+            margin-top:5px;
+        }
+        /*设置导航条二级标题背景色、取消边框*/
+        .panel-group .panel {
+            background-color: #438EB9;
+            border: none;
+        }
+        /*设置导航条一级标题文字颜色、背景色*/
+        .panel-default>.panel-heading {
+            border: none;
+            color: #FFFFFF;
+            background-color: #62A8D1;
+        }
+        /*设置导航条二级标题取消边框、标题间隔为0*/
+        .panel-group .panel-heading+.panel-collapse>.panel-body {
+            border: none;
+        }
+        .panel-body {
+            padding: 0px 0px;
+        }
+        .nav {
+            margin-left: 0px;
+        }
+        /*设置选中二级标题背景色*/
+        .nav>li>a:hover, .nav>li>a:focus {
+            background-color: #336699;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function search(){
+            var url = "../../SaleitemServlet";
+            if (window.XMLHttpRequest)
+                req = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            if (req) {
+                //采用POST方式，异步传输
+                req.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.onreadystatechange = searchComplete;
+                req.send("type=search&name="+document.getElementById("sale_item_id").value);
+            }
+        }
+
+        function searchComplete() {
+            if (req.readyState === 4 && req.status === 200) {
+                var theTable = document.getElementById("table");//table的id
+                var num=theTable.rows.length;
+                while(num>1) {
+                    theTable.deleteRow(num-1);
+                    num=theTable.rows.length;
+                }
+                var json =  JSON.parse(req.responseText);//转换为json对象
+                for(i=0; i<json.length; i++) {
+                    var rowCount = theTable.rows.length; //获得当前表格的行数
+                    var row = theTable.insertRow(rowCount);//在tale里动态的增加tr
+                    row.insertCell(0).innerHTML = json[i].saleItemId;
+                    row.insertCell(1).innerHTML = json[i].ticketId;
+                    row.insertCell(2).innerHTML = json[i].saleId;
+                    row.insertCell(3).innerHTML = json[i].saleItemPrice;
+                    var tmp = json[i].saleItemId + "," + json[i].ticket_id + "," + json[i].saleId + "," + json[i].saleItemPrice;
+                    row.insertCell(3).innerHTML = '<input type="button" class="btn btn-xs btn-primary" value="修改" onclick="modify('+ tmp +')" />&nbsp;&nbsp;<input type="button" class="btn btn-xs btn-danger" value="删除" onclick="del('+json[i].saleItemId+')" />';
+                }
+            }
+        }
+        function modify(a,b,c,d){
+            window.location="saleitemdetail.html?type=update&saleItemId="+a
+                +"&ticketId="+b
+                +"&saleId="+c
+                +"&saleItemPrice="+d;
+        }
+
+        function del(id){
+            if(confirm("确定删除？")) {
+
+                var url = "../../SaleitemServlet";
+                if (window.XMLHttpRequest)
+                    req = new XMLHttpRequest();
+                else if (window.ActiveXObject)
+                    req = new ActiveXObject("Microsoft.XMLHTTP");
+                if (req) {
+                    //采用POST方式，异步传输
+                    req.open("post", url, true);
+                    //POST方式，必须加入如下头信息设定
+                    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    req.onreadystatechange = delComplete;
+                    req.send("type=delete&saleItemId="+id);
+                }
+            }
+        }
+        function delComplete() {
+            if (req.readyState === 4 && req.status === 200) {
+                if(req.responseText===1)
+                    search();
+                else
+                    alert("数据删除失败，请重试");
+            }
+        }
+        function init(){
+            search();
+            //不同页面修改这里默认选中样式
+            $("#linksaleticket").css("background-color","#336699");
+            $("#sub4").attr("class","collapse panel-collapse in");
+        }
+    </script>
+</head>
+
+<body onload="init()">
+
+<!-- 上部banner -->
+<div id="navbar" class="navbar">
+    <div class="navbar-container ace-save-state" id="navbar-container">
+        <!-- 左边标题 -->
+        <div class="navbar-header pull-left">
+            <a href="../../customer/index.html" class="navbar-brand">
+                <small>
+                    <span class="glyphicon glyphicon-film"></span>&nbsp;Toto剧院管理系统</small>
+            </a>
+        </div>
+        <!-- 右边个人设置 -->
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="light-blue dropdown-modal">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="../../images/admin.png" alt="admin's Photo" />
+                        <span class="user-info">欢迎,<br>管理员</span>
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li><a href="#"><i class="ace-icon fa fa-cog"></i>设置</a></li>
+                        <li><a href="#"><i class="ace-icon fa fa-user"></i>个人信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="../../customer/index.html"><i class="ace-icon fa fa-power-off"></i>退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 下部内容 -->
+<div class="row">
+
+    <!--左导航栏 -->
+    <div class="col-md-2">
+        <div class="panel-group" id="panelContainer">
+            <!-- 导航栏1 -->
+            <div class="panel panel-default">
+                <!-- 加入data-toggle="collapse"后可点击折叠 -->
+                <div id="header1" class="panel-heading" data-toggle="collapse" data-target="#sub1" data-parent="#panelContainer">
+                    <i class="glyphicon glyphicon-leaf"></i>
+                    <a href="#">剧院管理</a>
+                    <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+                </div>
+                <div id="sub1" class="collapse panel-collapse">
+                    <div class="panel-body">
+                        <ul class="nav">
+                            <li>
+                                <a id="linkstudio" href="../studio/studio.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>演出厅管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkplay" href="../studio/play.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>剧目管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linksched" href="../studio/schedule.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>演出计划
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkcheck" href="../studio/ticket.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>验票管理
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 导航栏2 -->
+            <div class="panel panel-default">
+                <!-- 加入data-toggle="collapse"后可点击折叠 -->
+                <div id="header2" class="panel-heading" data-toggle="collapse" data-target="#sub2" data-parent="#panelContainer">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a href="#">用户管理</a>
+                    <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+                </div>
+                <div id="sub2" class="collapse panel-collapse">
+                    <div class="panel-body">
+                        <ul class="nav">
+                            <li>
+                                <a id="linkcustomer" href="../user/customer.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>观众管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkemp" href="../user/employee.html" style="padding-left:30px;background-color:#336699">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>员工管理
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 导航栏3 -->
+            <div class="panel panel-default">
+                <!-- 加入data-toggle="collapse"后可点击折叠 -->
+                <div id="header3" class="panel-heading" data-toggle="collapse" data-target="#sub3" data-parent="#panelContainer">
+                    <i class="glyphicon glyphicon-tasks"></i>
+                    <a href="#">票务管理</a>
+                    <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+                </div>
+                <div id="sub3" class="collapse panel-collapse">
+                    <div class="panel-body">
+                        <ul class="nav">
+                            <li>
+                                <a id="linksale" href="../ticket/Sales.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>售票管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkrefund" href="../ticket/Refund.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>退票管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkstat" href="../ticket/Statistics.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>销售统计
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 导航栏4 -->
+            <div class="panel panel-default">
+                <!-- 加入data-toggle="collapse"后可点击折叠 -->
+                <div id="header4" class="panel-heading" data-toggle="collapse" data-target="#sub4" data-parent="#panelContainer">
+                    <i class="glyphicon glyphicon-tasks"></i>
+                    <a href="#">财务管理</a>
+                    <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+                </div>
+                <div id="sub4" class="collapse panel-collapse">
+                    <div class="panel-body">
+                        <ul class="nav">
+                            <li>
+                                <a id="linksaleticket" href="../finance/SaleItem.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>票款管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linksaleachi" href="../finance/SalesAchi.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>销售业绩
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linksalestat" href="../finance/SalesStat.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>销售统计
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 导航栏5 -->
+            <div class="panel panel-default">
+                <!-- 加入data-toggle="collapse"后可点击折叠 -->
+                <div id="header5" class="panel-heading" data-toggle="collapse" data-target="#sub5" data-parent="#panelContainer">
+                    <i class="glyphicon glyphicon-tasks"></i>
+                    <a href="#">权限管理</a>
+                    <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+                </div>
+                <div id="sub5" class="collapse panel-collapse">
+                    <div class="panel-body">
+                        <ul class="nav">
+                            <li>
+                                <a id="linkresource" href="../authority/resource.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>资源管理
+                                </a>
+                            </li>
+                            <li>
+                                <a id="linkrole" href="../authority/role.html" style="padding-left:30px;">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>角色管理
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--右侧主体部分-->
+    <div class="col-md-9" style="margin-left:5px;">
+        <div style="margin:5px 0px 10px 0px;">财务管理 > 票款管理</div>
+        <hr>
+        <!-- 查询块 -->
+        <div class="search">
+            <form class="form-inline" name="myForm" action="#" method="post">
+                销售项ID:
+                <input type="text" class="form-control" id="sale_item_id" name="sale_item_id"/>&nbsp;&nbsp;
+                <input type="button" class="btn btn-primary" value="查   询" onclick="search()" />&nbsp;&nbsp;
+                <input type="button" class="btn btn-danger"  value="增   加" onclick="javascript:window.location='saleitemdetail.html?type=add'" />
+            </form>
+        </div>
+
+        <!-- 销售项目信息显示-->
+        <div>
+            <table id="table" class="table table-bordered table-hover" style="text-align: center;margin-top:10px">
+                <tr>
+                    <th style="text-align: center;">销售项ID</th>
+                    <th style="text-align: center;">票ID</th>
+                    <th style="text-align: center;">销售单ID</th>
+                    <th style="text-align: center;">票价</th>
+                    <th style="text-align: center;">操作</th>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

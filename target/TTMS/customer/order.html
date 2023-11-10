@@ -1,0 +1,414 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>汉唐剧院管理系统-购票</title>
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/slick.css" />
+    <link rel="stylesheet" href="../css/slicknav.css" />
+    <link rel="stylesheet" href="../css/animate.css" />
+    <link rel="stylesheet" href="../css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <style type="text/css">
+    label {
+        float:right;
+    }
+    #for_weixin:checked ~.imgDiv, #for_zhifubao:checked ~.imgDiv, #for_account:checked ~.imgDiv{
+        box-shadow:1px 1px 4px #333;
+        -webkit-box-shadow:1px 1px 4px #333;
+       -moz-box-shadow:1px 1px 4px #333;
+    }
+    .radio{
+        display: none;
+    }
+    .showText {
+        width : 140px;
+        height : 49px;
+    }
+</style>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.form.min.js"></script>
+<script src="../js/jquery.validate.min.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        UrlParm = function() { // url参数
+            var data, index;
+            (function init() {
+                data = [];
+                index = {};
+                var u = window.location.search.substr(1);
+                if (u != '') {
+                    var parms = decodeURIComponent(u).split('&');
+                    for (var i = 0, len = parms.length; i < len; i++) {
+                        if (parms[i] != '') {
+                            var p = parms[i].split("=");
+                            if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=
+                                data.push([ '' ]);
+                                index[p[0]] = data.length - 1;
+                            } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =
+                                data[0] = [ p[1] ];
+                            } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa
+                                data.push([ p[1] ]);
+                                index[p[0]] = data.length - 1;
+                            } else {// c=aaa
+                                data[index[p[0]]].push(p[1]);
+                            }
+                        }
+                    }
+                }
+            })();
+            return {
+                // 获得参数
+                parm : function(o) { // o: 参数名或者参数次序
+                    try {
+                        return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);
+                    } catch (e) {
+                    }
+                },
+                //获得参数组, 类似request.getParameterValues()
+                parmValues : function(o) { //  o: 参数名或者参数次序
+                    try {
+                        return (typeof (o) == 'number' ? data[o] : data[index[o]]);
+                    } catch (e) {
+                    }
+                },
+                //是否含有parmName参数
+                hasParm : function(parmName) {
+                    return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;
+                },
+                // 获得参数Map ,类似request.getParameterMap()
+                parmMap : function() {
+                    var map = {};
+                    try {
+                        for ( var p in index) {
+                            map[p] = data[index[p]];
+                        }
+                    } catch (e) {
+                    }
+                    return map;
+                }
+            }
+        }();
+        var a = UrlParm.parm("t1");
+        var b = UrlParm.parm("t2");
+        var c = UrlParm.parm("t3");
+        var d = UrlParm.parm("t4");
+        var e = UrlParm.parm("t5");
+        var id=UrlParm.parm("cus_id");
+        var sched_price=UrlParm.parm("sched_price");
+        var price=0*1.0;
+
+        if(a!=0){
+            price=sched_price*1.0+price;
+        }
+        if(b!=0){
+            price=sched_price*1.0+price;
+        }
+        if(c!=0){
+            price=sched_price*1.0+price;
+        }
+        if(d!=0){
+            price=sched_price*1.0+price;
+        }
+        if(e!=0){
+            price=sched_price*1.0+price;
+        }
+        alert(price)
+        function search(){
+            //var type = UrlParm.parm("type");
+
+            //alert(a+b+c+d+e)
+            var url = "../TicketAndSeatServlet";
+            if (window.XMLHttpRequest)
+                req = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            if (req) {
+                //采用POST方式，异步传输
+                req.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.onreadystatechange = searchComplete;
+                req.send("type=search2&a="+a+"&b="+b+"&c="+c+"&d="+d+"&e="+e);
+            }
+
+
+        }
+        function searchComplete() {
+            if (req.readyState == 4 && req.status == 200) {
+                var theTable = document.getElementById("table");//table的id
+                var num=theTable.rows.length;
+                while(num>1) {
+                    theTable.deleteRow(num-1);
+                    num=theTable.rows.length;
+                }
+                var json =  JSON.parse(req.responseText);//转换为json对象
+                for(i=0; i<json.length; i++) {
+                    var rowCount = theTable.rows.length; //获得当前表格的行数
+                    var row = theTable.insertRow(rowCount);//在tale里动态的增加tr
+                    row.insertCell(0).innerHTML = json[i].play_name;
+                    row.insertCell(1).innerHTML = json[i].sched_time;
+                    row.insertCell(2).innerHTML = json[i].studio_name;
+                    row.insertCell(3).innerHTML = json[i].seat_row+'排'+json[i].seat_col+'列';
+
+                }
+            }
+        }
+        function openQS()
+        {
+            /* var a = UrlParm.parm("t1");
+            var b = UrlParm.parm("t2");
+            var c = UrlParm.parm("t3");
+            var d = UrlParm.parm("t4");
+            var e = UrlParm.parm("t5"); */
+            var url = "../TicketAndSeatServlet";
+            if (window.XMLHttpRequest)
+                req = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            if (req) {
+                //采用POST方式，异步传输
+                req.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                //req.onreadystatechange = searchComplete;
+                req.send("type=lock&a="+a+"&b="+b+"&c="+c+"&d="+d+"&e="+e);
+            }
+
+
+
+            check()
+            /*  // 弹出服务器端返回二维码，此处为实例，具体请自行完成
+             $('#gridSystemModalLabel').text($("input[name='pay']:checked").val());
+             $('#myModal').modal({keyboard: true}); */
+        }
+        function check(){
+            var paypwd=prompt("请输入您的支付密码,");
+            var url = "../CustomerServlet";
+            if (window.XMLHttpRequest)
+                req = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            if (req) {
+                //采用POST方式，异步传输
+                req.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.onreadystatechange = checkComplete;
+                req.send("type=paypwd&paypwd="+paypwd+"&id="+id);
+            }
+
+
+        }
+        function checkComplete(){
+            if (req.readyState == 4 && req.status == 200) {
+                //alert(re.responseText)
+                if (req.responseText==1){
+                    zhifu()
+                }else if(req.responseText==0){
+                    alert('密码错误')
+
+                }
+            }
+        }
+        function zhifu(){
+            var url = "../CustomerServlet";
+            if (window.XMLHttpRequest)
+                re = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                re = new ActiveXObject("Microsoft.XMLHTTP");
+            if (re) {
+                //采用POST方式，异步传输
+                re.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                re.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                re.onreadystatechange = zhifuComplete;
+                re.send("type=zhifu&cus_id="+id+"&price="+price);
+            }
+        }
+
+        function zhifuComplete() {
+            if (re.readyState == 4 && re.status == 200) {
+                //alert(re.responseText)
+                if (re.responseText==0){
+                    alert("余额不足，请充值！")
+                }else if(re.responseText==1){
+                    pay();
+                }
+
+            }
+        }
+        function pay(){
+            var url = "../SaleServlet";
+            if (window.XMLHttpRequest)
+                req = new XMLHttpRequest();
+            else if (window.ActiveXObject)
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            if (req) {
+                //alert(a+b+c+d+e)
+                //采用POST方式，异步传输
+                req.open("post", url, true);
+                //POST方式，必须加入如下头信息设定
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.onreadystatechange = payComplete;
+                req.send("type=add&a="+a+"&b="+b+"&c="+c+"&d="+d+"&e="+e+"&id="+id+"&price="+price);
+
+            }
+        }
+        function payComplete() {
+            if (re.readyState == 4 && re.status == 200) {
+                //alert(re.responseText)
+                if (re.responseText==0){
+                    alert('购买失败')
+                }else if(re.responseText==1){
+                    alert('购买成功')
+                }
+
+            }
+        }
+    </script>
+
+<!--<script type="text/javascript">-->
+<!--function openQS()-->
+<!-- {-->
+<!--	 // 弹出服务器端返回二维码，此处为实例，具体请自行完成-->
+<!--     $('#gridSystemModalLabel').text($("input[name='pay']:checked").val());-->
+<!--     $('#myModal').modal({keyboard: true});-->
+<!-- }-->
+
+
+<!--</script>-->
+</head>
+<body  class="contact-template" >
+<header id="site-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2" style="margin:5px">
+            <a href="index.html" id="test"><img src="../images/logo/totologo1.png" width="127" height="48"/></a>
+
+            </div>
+            <div class="col-md-5 col-sm-8">
+                <nav id="site-nav" class="nav navbar-default">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">主页</a></li>
+                        <li><a href="board.html">榜单</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                        <li><a href="login.jsp">登陆</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="main-page clearfix" style="width:100%;background-image:url('../images/banner_bg.png');">
+    <div class="container" style="margin-top: 15px;margin-bottom:15px">
+        <div class="row"style="">
+            <div class="col-md-3">
+                <div class="contact-form-wrapper">
+                    <img src="../images/property/1.jpg" width="232px" height="322px">
+                </div>
+            </div>
+            <div class="col-md-3" style="color:white">
+                <h3   id ="name" style="color:white"><!-- 我和我的家乡 --></h3>
+                <br><br>
+                <p>剧情 喜剧</p>
+                <p>中国大陆 / 153分钟</p>
+                <p>2020-10-01 上映</p>
+                <button type="button" class="btn btn-warning"><i class="fa fa-heart-o"></i> 想看</button>
+                <button type="button" class="btn btn-warning"><i class="fa fa-star-o"></i> 评分</button>
+                <br><br><button type="button" class="btn btn-danger" style="width:150px" onclick="alert('很遗憾，特惠票已售罄!')">特惠购票</button>
+            </div>
+            <div class="col-md-4" style="color:white;margin-top:210px">
+                <p >电影《我和我的家乡》定档2020年国庆，延续《我和我的祖国》集体创作的方式，由张艺谋担当总监制，宁浩担任总导演，张一白担任总策划，宁浩、徐峥、陈思诚、闫非/彭大魔、邓超/俞白眉分别执导五个故事。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-page clearfix">
+    <div class="container" style="margin-top: 15px;margin-bottom:15px">
+        <div class="row">
+            <table id="table" class="table table-hover" >
+                <tr>
+                    <th>剧目</th>
+                    <th>时间</th>
+                    <th>放映厅</th>
+                    <th>座位</th>
+                <tr>
+                <tr>
+                    <th>我和我的家乡</th>
+                    <th>2020年10月14日 10:00</th>
+                    <th>VIP厅</th>
+                    <th>1排1座</th>
+                <tr>
+                <tr>
+                    <th>我和我的家乡</th>
+                    <th>2020年10月14日 10:00</th>
+                    <th>VIP厅</th>
+                    <th>1排2座</th>
+                <tr>
+            </table>
+        </div>
+        <div class="container">
+            <div  class="row" style="float:right">实际支付：<span id="pay" style="color:red;font-size:30px"><!-- ￥70 --></span></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <!-- 在button中加入 data-toggle="modal" data-target="#myModal" 可不调用js弹出对话框-->
+                <button class="btn btn-danger btn-lg" style="float:right;margin-left:50px" onclick="openQS()">确认支付</button>
+                <label for="for_weixin">
+                    <div class="showText">
+                        <input id="for_weixin" type="radio" class="radio" name="pay" value="微信支付" checked>
+                        <div class="imgDiv">
+                            <img src="../images/pay_weixin.jpg">
+                        </div>
+                    </div>
+                </label>
+                <label for="for_zhifubao" style="margin-right : 5px">
+                    <div class="showText">
+                        <input id="for_zhifubao" type="radio" class="radio" name="pay" value="支付宝支付">
+                        <div class="imgDiv">
+                            <img src="../images/pay_zhifubao.jpg">
+                        </div>
+                    </div>
+                </label>
+                <label for="for_account">
+                    <div class="showText">
+                        <input id="for_account" type="radio" class="radio" name="pay" value="账户扣款">
+                        <div class="imgDiv">
+                            <img src="../images/pay_account.png">
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹出模态框 -->
+    <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 100px">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="gridSystemModalLabel"></h4>
+              </div>
+              <div class="modal-body" style="text-align:center">
+                  <img src="../images/qrcode.png" style="margin:20px">
+              </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+	<a href="#top" id="scroll-top"><i class="fa fa-angle-up"></i></a>
+
+</body>
+</html>

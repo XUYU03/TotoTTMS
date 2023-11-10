@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>左侧信息和右侧变化的布局</title>
+  <meta charset="utf-8">
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      background-color: #f5f5f5;
+    }
+    .left {
+      flex: 1;
+      padding: 20px;
+      background-color: #ffffff;
+      border-right: 1px solid #cccccc;
+    }
+    .right {
+      flex: 2;
+      padding: 20px;
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="left" id="left-info">
+    <h2>左侧信息</h2>
+    <p>这里是左侧信息的内容11111111。</p>
+  </div>
+  <div class="right" id="right-content">
+    <h2>右侧内容</h2>
+    <p>这里是右侧内容的初始内容。</p>
+  </div>
+</div>
+
+<script>
+  // 获取左侧信息的元素对象
+  var leftInfo = document.getElementById("left-info");
+
+  // 获取右侧内容的元素对象
+  var rightContent = document.getElementById("right-content");
+
+  // 给左侧信息的元素对象添加一个事件监听器
+  leftInfo.addEventListener("click", function() {
+    // 更新右侧内容的元素对象的文本或者HTML代码
+    rightContent.innerHTML = "<h2>右侧内容</h2><p>这里是右侧内容的新内容。</p>";
+  });
+</script>
+</body>
+</html>

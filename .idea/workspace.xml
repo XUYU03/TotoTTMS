@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TTMS:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a46fec03-b1f0-46ce-bd95-1689786205ed" name="Changes" comment="Merge remote-tracking branch 'origin/master'">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/model/seatbean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TTMS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CusScheduleServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CusScheduleServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CusTicket_SeatServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CusTicket_SeatServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/RegisterServlet1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/RegisterServlet1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/ScheduleServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/ScheduleServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/SeatDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/SeatDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/StudioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/StudioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/TicketDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/TicketDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iSeatDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iSeatDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iTicketDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iTicketDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/SeatSrv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/SeatSrv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/StudioSrv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/StudioSrv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/TicketSrv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/TicketSrv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/druid.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/druid.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/studio/play.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/studio/play.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/schedule.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/seats.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/seats.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PATH_TO_GIT" value="D:\Code\Git\bin\git.exe" />
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="duhaojie" />
+        <option value="unknown &lt;2802188750@qq.com&gt;" />
+      </list>
+    </option>
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectId" id="2QJggD4Pn8mXlS0jEaoQXNKRwag" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="false" id="Update" />
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Code/Project/TotoTTMS/6.6/TotoTTMS/src/main/webapp/customer&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.42988506&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.jsOptions&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ],
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;87f76853-c89c-44d0-88c4-c4321d63ba0a&quot;,
+      &quot;40a2b56c-71b9-418c-bf12-39c55ddefd7a&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\customer" />
+      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\login2" />
+      <recent name="C:\Users\27641\IdeaProjects\TotoTTMS\src\main\webapp\admin\authority" />
+      <recent name="D:\GITTTMS02\TotoTTMS\src\main\webapp\WEB-INF\lib" />
+      <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\customer" />
+      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\simple_login" />
+      <recent name="C:\Users\27641\IdeaProjects\TotoTTMS\src\main\java\xupt\se\ttms\controller" />
+      <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp\images\logo" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="xupt.se.ttms.dao" />
+      <recent name="xupt.se.util" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Tomcat 服务器.Tomcat 9.0.75">
+    <configuration name="ScheduleDAOtest.getfirst" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TTMS" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
+      <option name="METHOD_NAME" value="getfirst" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScheduleDAOtest.insert_ticket" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TTMS" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
+      <option name="METHOD_NAME" value="insert_ticket" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScheduleDAOtest.reselectedid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TTMS" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
+      <option name="METHOD_NAME" value="reselectedid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudioDAOTest.queryById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TTMS" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="StudioDAOTest" />
+      <option name="METHOD_NAME" value="queryById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudioDAOTest.selectbyid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TTMS" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="StudioDAOTest" />
+      <option name="METHOD_NAME" value="selectbyid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 9.0.75" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.75" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8" nameIsGenerated="true">
+      <option name="BROWSER_ID" value="37cae5b9-e8b2-4949-9172-aafa37fbc09c" />
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="redeploy-artifacts" />
+      <deployment>
+        <artifact name="TTMS:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/TTMS" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="1b03ffd3-8908-4957-84b7-9d2934670157" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="51406" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="TTMS:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.ScheduleDAOtest.getfirst" />
+      <item itemvalue="JUnit.ScheduleDAOtest.insert_ticket" />
+      <item itemvalue="JUnit.ScheduleDAOtest.reselectedid" />
+      <item itemvalue="JUnit.StudioDAOTest.queryById" />
+      <item itemvalue="JUnit.StudioDAOTest.selectbyid" />
+      <item itemvalue="Tomcat 服务器.Tomcat 9.0.75" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ScheduleDAOtest.getfirst" />
+        <item itemvalue="JUnit.ScheduleDAOtest.reselectedid" />
+        <item itemvalue="JUnit.ScheduleDAOtest.insert_ticket" />
+        <item itemvalue="JUnit.StudioDAOTest.selectbyid" />
+        <item itemvalue="JUnit.StudioDAOTest.queryById" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a46fec03-b1f0-46ce-bd95-1689786205ed" name="Changes" comment="" />
+      <created>1685077215890</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685077215890</updated>
+      <workItem from="1685077218916" duration="15345000" />
+      <workItem from="1685156411119" duration="27374000" />
+      <workItem from="1685330069310" duration="2092000" />
+      <workItem from="1685404461346" duration="7794000" />
+      <workItem from="1685545084866" duration="35899000" />
+      <workItem from="1685988073131" duration="929000" />
+      <workItem from="1685989274958" duration="727000" />
+      <workItem from="1685990041507" duration="2000" />
+      <workItem from="1686010200096" duration="2349000" />
+      <workItem from="1686012562508" duration="2443000" />
+      <workItem from="1686015031011" duration="1036000" />
+      <workItem from="1686018089542" duration="750000" />
+      <workItem from="1686037877758" duration="6437000" />
+      <workItem from="1686044391658" duration="17663000" />
+      <workItem from="1686078618944" duration="12412000" />
+      <workItem from="1686091441923" duration="1609000" />
+      <workItem from="1686095836044" duration="176000" />
+      <workItem from="1686096077648" duration="22000" />
+      <workItem from="1686096185131" duration="450000" />
+      <workItem from="1686096781744" duration="2962000" />
+      <workItem from="1686099824179" duration="13601000" />
+      <workItem from="1686141582819" duration="14973000" />
+      <workItem from="1686157729806" duration="19000" />
+      <workItem from="1686157760980" duration="26411000" />
+      <workItem from="1686203891059" duration="38832000" />
+      <workItem from="1686270625528" duration="191000" />
+      <workItem from="1686272476122" duration="661000" />
+      <workItem from="1686273307139" duration="133000" />
+    </task>
+    <task id="LOCAL-00001" summary="TotoTTMS">
+      <created>1685079785094</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685079785094</updated>
+    </task>
+    <task id="LOCAL-00002" summary="TotoTTMS">
+      <created>1685082709013</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1685082709013</updated>
+    </task>
+    <task id="LOCAL-00003" summary="TotoTTMS">
+      <created>1685088527749</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1685088527749</updated>
+    </task>
+    <task id="LOCAL-00004" summary="TotoTTMS">
+      <created>1685089692027</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1685089692027</updated>
+    </task>
+    <task id="LOCAL-00005" summary="TotoTTMS">
+      <created>1685091598890</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1685091598890</updated>
+    </task>
+    <task id="LOCAL-00006" summary="TotoTTMS">
+      <created>1685092015710</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1685092015710</updated>
+    </task>
+    <task id="LOCAL-00007" summary="TotoTTMS">
+      <created>1685170744848</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1685170744848</updated>
+    </task>
+    <task id="LOCAL-00008" summary="TotoTTMS">
+      <created>1685203606043</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1685203606043</updated>
+    </task>
+    <task id="LOCAL-00009" summary="TotoTTMS">
+      <created>1685276806995</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1685276806995</updated>
+    </task>
+    <task id="LOCAL-00010" summary="TotoTTMS">
+      <created>1685324758136</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1685324758136</updated>
+    </task>
+    <task id="LOCAL-00011" summary="TotoTTMS">
+      <created>1685325546785</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1685325546785</updated>
+    </task>
+    <task id="LOCAL-00012" summary="TotoTTMS">
+      <created>1685325785205</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1685325785205</updated>
+    </task>
+    <task id="LOCAL-00013" summary="TotoTTMS">
+      <created>1685326963962</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1685326963962</updated>
+    </task>
+    <task id="LOCAL-00014" summary="TotoTTMS">
+      <created>1685329855090</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1685329855090</updated>
+    </task>
+    <task id="LOCAL-00015" summary="TotoTTMS">
+      <created>1685333392789</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1685333392789</updated>
+    </task>
+    <task id="LOCAL-00016" summary="TotoTTMS">
+      <created>1685334917947</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685334917947</updated>
+    </task>
+    <task id="LOCAL-00017" summary="TotoTTMS">
+      <created>1685336058181</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1685336058181</updated>
+    </task>
+    <task id="LOCAL-00018" summary="TotoTTMS">
+      <created>1685586968756</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1685586968756</updated>
+    </task>
+    <task id="LOCAL-00019" summary="TotoTTMS">
+      <created>1685988491206</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1685988491206</updated>
+    </task>
+    <task id="LOCAL-00020" summary="TotoTTMS">
+      <created>1685989590923</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1685989590923</updated>
+    </task>
+    <task id="LOCAL-00021" summary="TotoTTMS">
+      <created>1685989818902</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1685989818902</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686014443255</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1686014443255</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686018614251</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1686018614251</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686018646984</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1686018646984</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686098738066</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1686098738066</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686101075887</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1686101075887</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686101847109</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1686101847109</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686104906098</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1686104906098</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686157862285</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1686157862285</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686157877635</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1686157877635</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
+      <created>1686158205382</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1686158205382</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
+      <created>1686158807516</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1686158807516</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
+      <created>1686158826959</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1686158826959</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
+      <created>1686158869666</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1686158869666</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Merge remote-tracking branch 'origin/master'">
+      <created>1686223321084</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1686223321084</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="TotoTTMS" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/master'" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

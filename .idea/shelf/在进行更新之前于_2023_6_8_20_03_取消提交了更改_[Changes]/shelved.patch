@@ -1,0 +1,2065 @@
+Index: src/main/webapp/customer/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"zh\">\r\n<head>\r\n <meta charset=\"utf-8\" />\r\n <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n <title>Toto剧院管理系统-首页</title>\r\n\r\n\r\n <meta charset=\"utf-8\">\r\n <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n <link rel=\"stylesheet\" href=\"../css/font-awesome.min.css\">\r\n <link rel=\"stylesheet\" href=\"../css/slick.css\">\r\n <link rel=\"stylesheet\" href=\"../css/slicknav.css\" >\r\n <link rel=\"stylesheet\" href=\"../css/animate.css\">\r\n <link rel=\"stylesheet\" href=\"../css/bootstrap.css\">\r\n <link rel=\"stylesheet\" href=\"../css/theme.css\">\r\n\r\n\r\n\r\n\r\n\r\n <script type=\"text/javascript\">\r\n  UrlParm = function() { // url参数\r\n   var data, index;\r\n   (function init() {\r\n    data = [];\r\n    index = {};\r\n    var u = window.location.search.substr(1);\r\n    if (u != '') {\r\n     var parms = decodeURIComponent(u).split('&');\r\n     for (var i = 0, len = parms.length; i < len; i++) {\r\n      if (parms[i] != '') {\r\n       var p = parms[i].split(\"=\");\r\n       if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=\r\n        data.push([ '' ]);\r\n        index[p[0]] = data.length - 1;\r\n       } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =\r\n        data[0] = [ p[1] ];\r\n       } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa\r\n        data.push([ p[1] ]);\r\n        index[p[0]] = data.length - 1;\r\n       } else {// c=aaa\r\n        data[index[p[0]]].push(p[1]);\r\n       }\r\n      }\r\n     }\r\n    }\r\n   })();\r\n   return {\r\n    // 获得参数\r\n    parm : function(o) { // o: 参数名或者参数次序\r\n     try {\r\n      return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);\r\n     } catch (e) {\r\n     }\r\n    },\r\n    //获得参数组, 类似request.getParameterValues()\r\n    parmValues : function(o) { //  o: 参数名或者参数次序\r\n     try {\r\n      return (typeof (o) == 'number' ? data[o] : data[index[o]]);\r\n     } catch (e) {\r\n     }\r\n    },\r\n    //是否含有parmName参数\r\n    hasParm : function(parmName) {\r\n     return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;\r\n    },\r\n    // 获得参数Map ,类似request.getParameterMap()\r\n    parmMap : function() {\r\n     var map = {};\r\n     try {\r\n      for ( var p in index) {\r\n       map[p] = data[index[p]];\r\n      }\r\n     } catch (e) {\r\n     }\r\n     return map;\r\n    }\r\n   }\r\n  }();\r\n\r\n  function get(){\r\n   var cus_id = UrlParm.parm(\"cus_id\");\r\n   window.location=\"schedule.html?play_id=1&cus_id=\"+cus_id;\r\n  }\r\n\r\n  function search(){\r\n   var url = \"../PlayServlet\";\r\n   if (window.XMLHttpRequest)\r\n    req = new XMLHttpRequest();\r\n   else if (window.ActiveXObject)\r\n    req = new ActiveXObject(\"Microsoft.XMLHTTP\");\r\n   if (req) {\r\n    //采用POST方式，异步传输\r\n    req.open(\"post\", url, true);\r\n    //POST方式，必须加入如下头信息设定\r\n    req.setRequestHeader(\"Content-Type\", \"application/x-www-form-urlencoded\");\r\n    req.onreadystatechange = searchComplete;\r\n    req.send(\"type=search&name=\"+document.getElementById(\"playname\").value);\r\n   }\r\n  }\r\n\r\n  function searchComplete() {\r\n   var cus_id = UrlParm.parm(\"cus_id\");\r\n   if (req.readyState == 4 && req.status == 200) {\r\n    var json =  JSON.parse(req.responseText);//转换为json对象\r\n\r\n    for(i=0; i<json.length; i++)\r\n    {\r\n     document.write(\r\n            '<div style = \"width: 18vw;height: 40vh;f\" >'+\r\n                '<div style = \"width: 200px;margin: auto\" >'+\r\n                    '<img src=\"../'+json[i].play_image+'\" style=\"border-radius: 10px\" width=\"200\"/>'+\r\n                '</div>'+\r\n                '<div style=\"width: 50px\"></div>'+\r\n                '<div style=\"width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px\">'+\r\n                    '<h3 style=\"width: 50px;color: #FFFFFF;margin: auto;\" href=\"schedule.html?play_id=' +json[i].play_id +\"&cus_id=\"+cus_id+'\"> 购票</h3>'+\r\n                '</div>'+\r\n            '</div>'\r\n            );\r\n     }\r\n   }\r\n  }\r\n  function init(){\r\n   search()\r\n  }\r\n </script>\r\n</head>\r\n\r\n<body class=\"\" >\r\n\r\n<header id=\"site-header\">\r\n\r\n\r\n\r\n <div class=\"container\">\r\n  <div class=\"row\">\r\n   <div class=\"col-md-2\" style=\"margin:5px\">\r\n    <a href=\"index.html\"><img src=\"../images/logo/totologo1.png\" width=\"127\" height=\"48\" /></a>\r\n   </div>\r\n   <div class=\"col-md-9\">\r\n    <nav id=\"site-nav\" class=\"nav navbar-default\">\r\n     <ul class=\"nav navbar-nav\">\r\n      <li><a href=\"index.html\">主页</a></li>\r\n      <li><a href=\"board.html\">榜单</a></li>\r\n      <li><a href=\"contact.html\">联系我们</a></li>\r\n     </ul>\r\n    </nav>\r\n   </div>\r\n  </div>\r\n </div>\r\n<div style=\"display: flex\">\r\n    <div style=\" width: 18vw;height: 40vh\">\r\n        <div style=\"width: 200px;margin:auto\">\r\n            <img src=\"../images/property/1.jpg\" style=\"border-radius: 10px\" />\r\n        </div>\r\n        <div style=\"width: 50px\"></div>\r\n        <div style=\"width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px\">\r\n            <h3  style=\"width: 50px;color: #FFFFFF;margin: auto;\"> 购票</h3>\r\n        </div>\r\n    </div>\r\n    <div style=\" width: 18vw;height: 40vh\">\r\n        <div style=\"width: 200px;margin:auto\">\r\n            <img src=\"../images/property/1.jpg\" style=\"border-radius: 10px\" />\r\n        </div>\r\n        <div style=\"width: 50px\"></div>\r\n        <div style=\"width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px\">\r\n            <h3  style=\"width: 50px;color: #FFFFFF;margin: auto;\"> 购票</h3>\r\n        </div>\r\n    </div>\r\n</div>>\r\n\r\n\r\n <!--搜索-->\r\n <div id=\"advance-search\" class=\"main-page clearfix\">\r\n  <div class=\"container\">\r\n   <a  class=\"btn-primary\" onclick=\"init()\">快速购票</a>\r\n   <form action=\"../../PlayServlet\" type=\"search\" id=\"adv-search-form\" class=\"clearfix\">\r\n    <h1 class=\"title wow slideInLeft\">搜一下</h1>\r\n    <input type=\"text\" id=\"playname\" name=\"playname\" placeholder=\"请输入剧目名：\" aria-required=\"true\" required=\"required\">\r\n    <button type=\"submit\" class=\"btn btn-primary btn-lg\">查询</button>\r\n   </form>\r\n  </div>\r\n </div>\r\n\r\n <!--轮播图-->\r\n</header>\r\n<div class=\"main-slider-wrapper clearfix\">\r\n <div id=\"main-slider\">\r\n  <div class=\"slide\"><img src=\"../images/slider/1.jpg\" /></div>\r\n  <div class=\"slide\"><img src=\"../images/slider/2.jpg\" /></div>\r\n  <div class=\"slide\"><img src=\"../images/slider/3.jpg\" /></div>\r\n<!--  <div class=\"slide\"><img src=\"../images/slider/4.png\" width=\"1920\" height=\"420\"/></div>-->\r\n </div>\r\n <div id=\"slider-contents\">\r\n  <div class=\"container text-center\">\r\n   <div class=\"jumbotron\">\r\n    <h1>寻找您的理想剧目</h1>\r\n    <div class=\"contents clearfix\">\r\n     <p>汉唐剧院是观众喜爱的观影平台，为您提供了在线详情服务。<br />\r\n      同时还为您提供剧目预告片、票房查询、剧目排行榜、剧目资讯等信息。</p>\r\n    </div>\r\n   </div>\r\n  </div>\r\n </div>\r\n</div>\r\n\r\n\r\n\r\n<!--联系信息-->\r\n<footer id=\"footer\">\r\n <div class=\"site-footer\">\r\n  <div class=\"container\">\r\n   <div class=\"row\">\r\n    <div class=\"col-md-4 col-sm-6\">\r\n     <section class=\"widget address-widget clearfix\">\r\n      <h4 class=\"title\">联系方式</h4>\r\n      <ul>\r\n       <li>\r\n        <i class=\"fa fa-map-marker\"></i>\r\n        <a href=\"http://cs.xiyou.edu.cn/\">西安市长安区西长安街618号东区计算机学院</a>\r\n       </li>\r\n       <li><i class=\"fa fa-phone\"></i>029-2147483648</li>\r\n       <li><i class=\"fa fa-envelope\"></i> tuto2147483648@666.com</li>\r\n       <li>@ Copyright &copy; 2023. 西安邮电大学计算机学院.</li>\r\n      </ul>\r\n     </section>\r\n    </div>\r\n   </div>\r\n  </div>\r\n </div>\r\n</footer>\r\n\r\n<a href=\"#top\" id=\"scroll-top\"><i class=\"fa fa-angle-up\"></i></a>\r\n<script src=\"../js/jquery.min.js\"></script>\r\n<script src=\"../js/bootstrap.min.js\"></script>\r\n<script src=\"../js/slick.min.js\"></script>\r\n<script src=\"../js/zoom.js\"></script>\r\n<script src=\"../js/theme.js\"></script>\r\n<script src=\"../js/jquery-ui.min.js\"></script>\r\n<script src=\"../js/jquery.form.min.js\"></script>\r\n<script src=\"../js/jquery.validate.min.js\"></script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/customer/index.html b/src/main/webapp/customer/index.html
+--- a/src/main/webapp/customer/index.html	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/webapp/customer/index.html	(date 1685988065815)
+@@ -1,246 +1,255 @@
+ <!DOCTYPE html>
+ <html lang="zh">
+-<head>
+- <meta charset="utf-8" />
+- <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+- <meta name="viewport" content="width=device-width, initial-scale=1" />
+- <title>Toto剧院管理系统-首页</title>
+-
+-
+- <meta charset="utf-8">
+- <meta http-equiv="X-UA-Compatible" content="IE=edge">
+- <meta name="viewport" content="width=device-width, initial-scale=1">
+- <link rel="stylesheet" href="../css/font-awesome.min.css">
+- <link rel="stylesheet" href="../css/slick.css">
+- <link rel="stylesheet" href="../css/slicknav.css" >
+- <link rel="stylesheet" href="../css/animate.css">
+- <link rel="stylesheet" href="../css/bootstrap.css">
+- <link rel="stylesheet" href="../css/theme.css">
+-
+-
+-
+-
+-
+- <script type="text/javascript">
+-  UrlParm = function() { // url参数
+-   var data, index;
+-   (function init() {
+-    data = [];
+-    index = {};
+-    var u = window.location.search.substr(1);
+-    if (u != '') {
+-     var parms = decodeURIComponent(u).split('&');
+-     for (var i = 0, len = parms.length; i < len; i++) {
+-      if (parms[i] != '') {
+-       var p = parms[i].split("=");
+-       if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=
+-        data.push([ '' ]);
+-        index[p[0]] = data.length - 1;
+-       } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =
+-        data[0] = [ p[1] ];
+-       } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa
+-        data.push([ p[1] ]);
+-        index[p[0]] = data.length - 1;
+-       } else {// c=aaa
+-        data[index[p[0]]].push(p[1]);
+-       }
+-      }
+-     }
+-    }
+-   })();
+-   return {
+-    // 获得参数
+-    parm : function(o) { // o: 参数名或者参数次序
+-     try {
+-      return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);
+-     } catch (e) {
+-     }
+-    },
+-    //获得参数组, 类似request.getParameterValues()
+-    parmValues : function(o) { //  o: 参数名或者参数次序
+-     try {
+-      return (typeof (o) == 'number' ? data[o] : data[index[o]]);
+-     } catch (e) {
+-     }
+-    },
+-    //是否含有parmName参数
+-    hasParm : function(parmName) {
+-     return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;
+-    },
+-    // 获得参数Map ,类似request.getParameterMap()
+-    parmMap : function() {
+-     var map = {};
+-     try {
+-      for ( var p in index) {
+-       map[p] = data[index[p]];
+-      }
+-     } catch (e) {
+-     }
+-     return map;
+-    }
+-   }
+-  }();
+-
+-  function get(){
+-   var cus_id = UrlParm.parm("cus_id");
+-   window.location="schedule.html?play_id=1&cus_id="+cus_id;
+-  }
+-
+-  function search(){
+-   var url = "../PlayServlet";
+-   if (window.XMLHttpRequest)
+-    req = new XMLHttpRequest();
+-   else if (window.ActiveXObject)
+-    req = new ActiveXObject("Microsoft.XMLHTTP");
+-   if (req) {
+-    //采用POST方式，异步传输
+-    req.open("post", url, true);
+-    //POST方式，必须加入如下头信息设定
+-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+-    req.onreadystatechange = searchComplete;
+-    req.send("type=search&name="+document.getElementById("playname").value);
+-   }
+-  }
+-
+-  function searchComplete() {
+-   var cus_id = UrlParm.parm("cus_id");
+-   if (req.readyState == 4 && req.status == 200) {
+-    var json =  JSON.parse(req.responseText);//转换为json对象
+-
+-    for(i=0; i<json.length; i++)
+-    {
+-     document.write(
+-            '<div style = "width: 18vw;height: 40vh;f" >'+
+-                '<div style = "width: 200px;margin: auto" >'+
+-                    '<img src="../'+json[i].play_image+'" style="border-radius: 10px" width="200"/>'+
+-                '</div>'+
+-                '<div style="width: 50px"></div>'+
+-                '<div style="width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px">'+
+-                    '<h3 style="width: 50px;color: #FFFFFF;margin: auto;" href="schedule.html?play_id=' +json[i].play_id +"&cus_id="+cus_id+'"> 购票</h3>'+
+-                '</div>'+
+-            '</div>'
+-            );
+-     }
+-   }
+-  }
+-  function init(){
+-   search()
+-  }
+- </script>
+-</head>
+-
+-<body class="" >
+-
+-<header id="site-header">
+-
+-
+-
+- <div class="container">
+-  <div class="row">
+-   <div class="col-md-2" style="margin:5px">
+-    <a href="index.html"><img src="../images/logo/totologo1.png" width="127" height="48" /></a>
+-   </div>
+-   <div class="col-md-9">
+-    <nav id="site-nav" class="nav navbar-default">
+-     <ul class="nav navbar-nav">
+-      <li><a href="index.html">主页</a></li>
+-      <li><a href="board.html">榜单</a></li>
+-      <li><a href="contact.html">联系我们</a></li>
+-     </ul>
+-    </nav>
+-   </div>
+-  </div>
+- </div>
+-<div style="display: flex">
+-    <div style=" width: 18vw;height: 40vh">
+-        <div style="width: 200px;margin:auto">
+-            <img src="../images/property/1.jpg" style="border-radius: 10px" />
+-        </div>
+-        <div style="width: 50px"></div>
+-        <div style="width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px">
+-            <h3  style="width: 50px;color: #FFFFFF;margin: auto;"> 购票</h3>
+-        </div>
+-    </div>
+-    <div style=" width: 18vw;height: 40vh">
+-        <div style="width: 200px;margin:auto">
+-            <img src="../images/property/1.jpg" style="border-radius: 10px" />
+-        </div>
+-        <div style="width: 50px"></div>
+-        <div style="width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px">
+-            <h3  style="width: 50px;color: #FFFFFF;margin: auto;"> 购票</h3>
+-        </div>
+-    </div>
+-</div>>
+-
+-
+- <!--搜索-->
+- <div id="advance-search" class="main-page clearfix">
+-  <div class="container">
+-   <a  class="btn-primary" onclick="init()">快速购票</a>
+-   <form action="../../PlayServlet" type="search" id="adv-search-form" class="clearfix">
+-    <h1 class="title wow slideInLeft">搜一下</h1>
+-    <input type="text" id="playname" name="playname" placeholder="请输入剧目名：" aria-required="true" required="required">
+-    <button type="submit" class="btn btn-primary btn-lg">查询</button>
+-   </form>
+-  </div>
+- </div>
++ <head>
++  <meta charset="utf-8" />
++  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
++  <meta name="viewport" content="width=device-width, initial-scale=1" />
++  <title>汉唐剧院管理系统-首页</title>
++  <!-- Styles -->
++  <link rel="stylesheet" href="../css/my.css" />
++  <!-- Bootstrap -->
++  <link rel="stylesheet" href="../css/bootstrap.css" />
++  <link rel="stylesheet" href="../css/font-awesome.min.css" />
++  <link rel="stylesheet" href="../css/slick.css" />
++  <link rel="stylesheet" href="../css/slicknav.css" />
++  <link rel="stylesheet" href="../css/animate.css" />
++  <link rel="stylesheet" href="../css/theme.css" />
++ </head>
++ <body class="">
++  <header id="site-header">
++   <div class="container">
++    <div class="row">
++     <div class="col-md-2" style="margin:5px">
++       <a href="index.html"><img src="../images/logo.png" width="127" height="48"/></a>
++     </div>
++     <div class="col-md-9">
++      <nav id="site-nav" class="nav navbar-default">
++       <ul class="nav navbar-nav">
++        <li><a href="index.html">主页</a></li>
++        <li><a href="board.html">榜单</a></li>
++        <li><a href="contact.html">联系我们</a></li>
++        <li><a href="login.jsp">登陆</a></li>
++       </ul>
++      </nav>
++     </div>
++    </div>
++   </div>
+ 
+- <!--轮播图-->
+-</header>
+-<div class="main-slider-wrapper clearfix">
+- <div id="main-slider">
+-  <div class="slide"><img src="../images/slider/1.jpg" /></div>
+-  <div class="slide"><img src="../images/slider/2.jpg" /></div>
+-  <div class="slide"><img src="../images/slider/3.jpg" /></div>
+-<!--  <div class="slide"><img src="../images/slider/4.png" width="1920" height="420"/></div>-->
+- </div>
+- <div id="slider-contents">
+-  <div class="container text-center">
+-   <div class="jumbotron">
+-    <h1>寻找您的理想剧目</h1>
+-    <div class="contents clearfix">
+-     <p>汉唐剧院是观众喜爱的观影平台，为您提供了在线详情服务。<br />
+-      同时还为您提供剧目预告片、票房查询、剧目排行榜、剧目资讯等信息。</p>
+-    </div>
+-   </div>
+-  </div>
+- </div>
+-</div>
+-
++  <!--轮播图-->
++  </header>
++  <div class="main-slider-wrapper clearfix">
++   <div id="main-slider">
++    <div class="slide"><img src="../images/slider/1.jpg"/></div>
++    <div class="slide"><img src="../images/slider/2.jpg"/></div>
++    <div class="slide"><img src="../images/slider/3.jpg"/></div>
++    <div class="slide"><img src="../images/slider/4.png"/></div>
++   </div>
++   <div id="slider-contents">
++    <div class="container text-center">
++     <div class="jumbotron">
++      <h1>寻找您的理想剧目</h1>
++      <div class="contents clearfix">
++       <p>汉唐剧院是观众喜爱的观影平台，为您提供了在线详情服务。<br />
++          同时还为您提供剧目预告片、票房查询、剧目排行榜、剧目资讯等信息。</p>
++      </div>
++     </div>
++    </div>
++   </div>
++  </div>
++
++  <!--搜索-->
++  <div id="advance-search" class="main-page clearfix">
++    <div class="container">
++      <button class="btn top-btn">寻找您的剧目</button>
++      <form action="#" id="adv-search-form" class="clearfix">
++        <input type="text" id="subject" name="filmname" placeholder="请输入剧目名 *" aria-required="true" required="required">
++        <button type="submit" class="btn btn-primary btn-lg">查询</button>
++      </form>
++    </div>
++  </div>
++
++  <!--剧目列表-->
++  <section id="home-property-listing">
++   <div class="container">
++    <div class="row">
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/1.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">我和我的家乡</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>喜剧片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=1'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/2.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">姜子牙</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>动漫片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=2'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/3.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">夺冠</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>生活片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=3'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/4.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">急先锋</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>动作片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=4'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/5.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">七号房的礼物</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>生活片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=5'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/6.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">天道王</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>战争片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=6'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/7.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">一点就到家</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>生活片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=7'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++     <div class="col-lg-3 col-sm-6 layout-item-wrap">
++      <article class="property layout-item clearfix">
++       <figure class="feature-image">
++        <a class="clearfix zoom" href="single-property.html"><img data-action="zoom" src="../images/property/8.jpg" alt="Property Image" /></a>
++       </figure>
++       <div class="property-contents clearfix">
++        <header class="property-header clearfix">
++         <div class="pull-left">
++          <h6 class="entry-title">喜宝</h6>
++          <span class="property-location">
++             <i class="fa fa-map-marker"></i>生活片
++         </span>
++         </div>
++         <button class="btn btn-primary btn-price pull-right btn-3d" data-hover="详情" onclick="javascript:window.location='schedule.html?playId=8'"><strong>详情</strong></button>
++        </header>
++       </div>
++      </article>
++     </div>
++    </div>
++   </div>
++  </section>
+ 
+-
+-<!--联系信息-->
+-<footer id="footer">
+- <div class="site-footer">
+-  <div class="container">
+-   <div class="row">
+-    <div class="col-md-4 col-sm-6">
+-     <section class="widget address-widget clearfix">
+-      <h4 class="title">联系方式</h4>
+-      <ul>
+-       <li>
+-        <i class="fa fa-map-marker"></i>
+-        <a href="http://cs.xiyou.edu.cn/">西安市长安区西长安街618号东区计算机学院</a>
+-       </li>
+-       <li><i class="fa fa-phone"></i>029-2147483648</li>
+-       <li><i class="fa fa-envelope"></i> tuto2147483648@666.com</li>
+-       <li>@ Copyright &copy; 2023. 西安邮电大学计算机学院.</li>
+-      </ul>
+-     </section>
+-    </div>
+-   </div>
+-  </div>
+- </div>
+-</footer>
+-
+-<a href="#top" id="scroll-top"><i class="fa fa-angle-up"></i></a>
+-<script src="../js/jquery.min.js"></script>
+-<script src="../js/bootstrap.min.js"></script>
+-<script src="../js/slick.min.js"></script>
+-<script src="../js/zoom.js"></script>
+-<script src="../js/theme.js"></script>
+-<script src="../js/jquery-ui.min.js"></script>
+-<script src="../js/jquery.form.min.js"></script>
+-<script src="../js/jquery.validate.min.js"></script>
+-</body>
++  <footer id="footer">
++   <div class="site-footer">
++    <div class="container">
++     <div class="row">
++      <div class="col-md-4 col-sm-6">
++       <section class="widget address-widget clearfix">
++        <h4 class="title">联系方式</h4>
++        <ul>
++         <li>
++           <i class="fa fa-map-marker"></i>
++           <a href="http://cs.xiyou.edu.cn/">西安市长安区西长安街618号东区计算机学院</a>
++          </li>
++         <li><i class="fa fa-phone"></i>029-88166712</li>
++         <li><i class="fa fa-envelope"></i> shuxf@xiyou.edu.cn</li>
++         <li>@ Copyright &copy; 2020. 西安邮电大学计算机学院.</li>
++        </ul>
++       </section>
++      </div>
++     </div>
++    </div>
++   </div>
++  </footer>
++  <a href="#top" id="scroll-top"><i class="fa fa-angle-up"></i></a>
++  <script src="../js/jquery.min.js"></script>
++  <script src="../js/bootstrap.min.js"></script>
++  <script src="../js/slick.min.js"></script>
++  <script src="../js/zoom.js"></script>
++  <script src="../js/theme.js"></script>
++  <script src="../js/jquery-ui.min.js"></script>
++  <script src="../js/jquery.form.min.js"></script>
++  <script src="../js/jquery.validate.min.js"></script>
++ </body>
+ </html>
+\ No newline at end of file
+Index: .idea/libraries/javax_mail_1_6_2.xml
+===================================================================
+diff --git a/.idea/libraries/javax_mail_1_6_2.xml b/.idea/libraries/javax_mail_1_6_2.xml
+deleted file mode 100644
+--- a/.idea/libraries/javax_mail_1_6_2.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="javax.mail-1.6.2">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/mysql_connector_j_8_0_32.xml
+===================================================================
+diff --git a/.idea/libraries/mysql_connector_j_8_0_32.xml b/.idea/libraries/mysql_connector_j_8_0_32.xml
+deleted file mode 100644
+--- a/.idea/libraries/mysql_connector_j_8_0_32.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="mysql-connector-j-8.0.32">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/mysql-connector-j-8.0.32.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/druid_1_1_10__3_.xml
+===================================================================
+diff --git a/.idea/libraries/druid_1_1_10__3_.xml b/.idea/libraries/druid_1_1_10__3_.xml
+deleted file mode 100644
+--- a/.idea/libraries/druid_1_1_10__3_.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="druid-1.1.10 (3)">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: TTMS.iml
+===================================================================
+diff --git a/TTMS.iml b/TTMS.iml
+deleted file mode 100644
+--- a/TTMS.iml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,27 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+-  <component name="FacetManager">
+-    <facet type="web" name="Web">
+-      <configuration>
+-        <descriptors>
+-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
+-        </descriptors>
+-        <webroots>
+-          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+-        </webroots>
+-        <sourceRoots>
+-          <root url="file://$MODULE_DIR$/src/main/java" />
+-          <root url="file://$MODULE_DIR$/src/main/resources" />
+-        </sourceRoots>
+-      </configuration>
+-    </facet>
+-  </component>
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$">
+-      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+-      <excludeFolder url="file://$MODULE_DIR$/target" />
+-    </content>
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/libraries/org_json_2_0__3_.xml
+===================================================================
+diff --git a/.idea/libraries/org_json_2_0__3_.xml b/.idea/libraries/org_json_2_0__3_.xml
+deleted file mode 100644
+--- a/.idea/libraries/org_json_2_0__3_.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="org.json-2.0 (3)">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/commons_dbutils_1_3__3_.xml
+===================================================================
+diff --git a/.idea/libraries/commons_dbutils_1_3__3_.xml b/.idea/libraries/commons_dbutils_1_3__3_.xml
+deleted file mode 100644
+--- a/.idea/libraries/commons_dbutils_1_3__3_.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="commons-dbutils-1.3 (3)">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/commons_beanutils_1_8_0__4_.xml
+===================================================================
+diff --git a/.idea/libraries/commons_beanutils_1_8_0__4_.xml b/.idea/libraries/commons_beanutils_1_8_0__4_.xml
+deleted file mode 100644
+--- a/.idea/libraries/commons_beanutils_1_8_0__4_.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ /dev/null	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="commons-beanutils-1.8.0 (4)">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: src/main/webapp/customer/board.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"zh\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n    <title>汉唐剧院管理系统-榜单</title>\r\n    <link rel=\"stylesheet\" href=\"../css/font-awesome.min.css\" />\r\n    <link rel=\"stylesheet\" href=\"../css/bootstrap.css\" />\r\n    <link rel=\"stylesheet\" href=\"../css/theme.css\" />\r\n</head>\r\n\r\n<body class=\"listing-template\">\r\n    <header id=\"site-header\">\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <div class=\"col-md-2\" style=\"margin:5px\">\r\n                    <a href=\"index.html\"><img src=\"../images/logo.png\" width=\"127\" height=\"48\"/></a>\r\n                </div>\r\n                <div class=\"col-md-5 col-sm-8\">\r\n                    <nav id=\"site-nav\" class=\"nav navbar-default\">\r\n                        <ul class=\"nav navbar-nav\">\r\n                            <li><a href=\"index.html\">主页</a></li>\r\n                            <li><a href=\"board.html\">榜单</a></li>\r\n                            <li><a href=\"contact.html\">联系我们</a></li>\r\n                            <li><a href=\"login.html\">登录</a></li>\r\n                        </ul>\r\n                    </nav>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n    <div id=\"site-banner\" class=\"text-center clearfix\">\r\n    <div class=\"container\">\r\n        <h1 class=\"title wow slideInLeft\">榜单</h1>\r\n    </div>\r\n    </div>\r\n\r\n    <section id=\"property-listing\">\r\n        <header class=\"section-header text-center\">\r\n            <div class=\"container\">\r\n                <h2 class=\"pull-left\">榜单</h2>\r\n                <div class=\"pull-right\">\r\n                    <div class=\"property-sorting pull-left\">\r\n                        <label for=\"property-sort-dropdown\"> 排序: </label>\r\n                        <select name=\"property-sort-dropdown\" id=\"property-sort-dropdown\">\r\n                             <option value=\"\">缺省顺序</option>\r\n                             <option value=\"by_date\">按日期</option>\r\n                             <option value=\"by_score\">按评分</option>\r\n                       </select>\r\n                    </div>\r\n                    <p class=\"pull-left layout-view\"> 展示样式:\r\n                        <i class=\"fa fa-th-large\" data-layout=\"3\"></i>\r\n                        <i class=\"fa fa-list-ul\" data-layout=\"12\"></i>\r\n                    </p>\r\n                </div>\r\n            </div>\r\n        </header>\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img src=\"../images/property/1.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">我和我的家乡</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>喜剧片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"9.2\"><strong>9.2</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>该片通过讲述中国五大地域的家乡故事，抒发人们的家国情怀，展示脱贫攻坚成果。<br>《北京好人》<br>张北京（葛优饰）续集，镜头对准在北京漂泊的异乡人。从《北京你好》到《北京好人》，张北京的这顶奥运纪念帽始终没有摘下，去年还盼着在奥运开幕式上张艺谋能“给咱扫个镜头”，如今竟潇洒放话没接艺谋拍戏邀约。<br><br>《天上掉下个UFO》<br>中秋之夜，贵州黔南的阿福村惊现神秘UFO，距离中国天眼只有15公里，刹那间轰动全村，爆炸性新闻甚至惊动了北京的记者。《再进科学》节目组的记者老唐（王宝强饰）和小秦（刘昊然饰）深入村中调查，回乡加入UFO调查队伍的还有科学家董科学（董子健饰）。村长王守正（王砚辉饰）和商人王出奇（王迅饰）热烈欢迎三人的到来，然而在调查过程中，几人又似乎“各怀鬼胎”。事件中的关键性人物，外表木讷、内心狂野的农民发明家黄大宝（黄渤 饰）亦惊喜现身。<br><br>《最后一课》<br>伴随一通国际长途电话打来，望溪村全村陷入了忙碌之中，为参照老照片恢复出1992年的一堂课，全体村民齐心协力，甚至模拟还原当年那场瓢泼大雨。望溪村全体村民要帮老范（范伟饰）解决什么问题。<br><br>《回乡之路》<br>故事发生在陕西的毛乌素沙漠，这片曾经寸草不生的沙漠，如今已是绿树葱葱。“沙地苹果”经销商乔树林（邓超饰）帮助家乡致富寻找买家，却遭到电商闫飞燕（闫妮饰）的嫌弃，两人因回母校参加校庆而被迫共同踏上回乡之路，一路波折不断、摩擦不停。<br><br>《神笔马亮》<br>出生在东北山村的马亮（沈腾饰）感慨“很多村子都老了，年轻人都走光了”，希望自己能为家乡做点事情。所以放弃了去重点美术学校，回到了自己的家乡，为家乡做了许多好事。为了不让秋霞（马丽饰）发现，所以和所有村民共同防止被秋霞发现所发生的事。<br></p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/2.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">姜子牙</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>动漫片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"9.0\"><strong>9.2</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《姜子牙》<br>该片由霍尔果斯彩条屋影业有限公司、中传合道文化发展有限公司出品的神话动作动画电影，由程腾、李炜执导，郑希、杨凝、图特哈蒙、阎么么等担任主要配音演员。该片讲述了封神大战之后，姜子牙因一时之过被贬下凡间，失去神力，被世人唾弃。为重回昆仑，姜子牙踏上旅途寻回自我的故事。该电影于2020年10月1日在中国内地、北美同步上映。<br>《姜子牙》是动画制作团队历时四年打磨的作品，在细节上，为追求影片画面的质感以及画风的协调性，制作团队花费重金聘请专业人士，对片中所有材质均创新性采用手绘方式绘制。电影累计共2317张场景概念图，单个场景平均迭代70余次，将颜色、材质、光线等都统一在同一视觉风格下，力求打造真实而震撼的封神世界。该片呈现了对称美学，团队使用了倒金字塔及螺旋式迭代等诸多国际前沿动画工业技术，以体系化的制片流程保证创意的高效实现。在美术表现上，影片别出心裁采用三维与二维结合的形式。其中二维段落制作历时十个月之久，造型、分镜、动作设计极其复杂，部分单一画面图层超过600个。<br>在场景设计上，团队绘制概念图2300余张，每个场景平均迭代次数累计70版。在人物细节上，影片中每个角色的动画模型均通过“室内、室外、阴天”三种光源下的调试，角色皮肤的质感、瞳孔中的倒影都清晰可见。\r\n                                </p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/3.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">夺冠</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>生活片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"8.3\"><strong>8.3</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《夺冠》<br>该片由陈可辛执导的剧情运动片，巩俐、黄渤、吴刚、彭昱畅、白浪、中国女子排球队领衔主演。该片于2020年9月25日在中国内地上映。影片讲述了中国女排从1981年首夺世界冠军到2016年里约奥运会生死攸关的中巴大战，诠释了几代女排人历经浮沉却始终不屈不挠、不断拼搏的传奇经历。<br><br>1980年训练赛，中国女排对战中国男排冠军江苏队，女排负。但那一代女排训练之艰苦，之刻苦，之永不言弃，已跃然银幕。1981年大阪世界杯决赛，中国队对战日本队，赢得了中国三大球第一个世界冠军，宋世雄那铿锵有力、极具辨识度的解说，一下子将观众带回了那个激情澎湃、阳光普照的年代。2008年北京奥运会小组赛，中国队对战当时主教练是郎平（巩俐饰）的美国队，中国队教练（黄渤饰）站在场边，全神贯注，面带笑容。郎平和那一代中国女排在那一刻所经历过的挣扎，令人心疼。2013年，郎平正式再次挂帅执教中国女排，带领着中国女排开启了新的历史阶段。2016年里约奥运会四分之一淘汰赛，中国队对战东道主世界排名第一的巴西队，最终获得了奥运会的金牌。</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/4.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">急先锋</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>动作片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"8.1\"><strong>8.1</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《急先锋》<br>由香港导演唐季礼执导的动作片，成龙、杨洋、艾伦、徐若晗、母其弥雅领衔主演，朱正廷特别出演。影片于2020年9月30日在中国内地上映。该片讲述了由华人组成的“急先锋”国际安保团队为了保护受到雇佣兵组织“北极狼”绑架威胁的中国商人秦国立、Fareeda父女，急先锋团队辗转全球各地展开营救的故事。<br><br>中国商人秦国立在英国惨遭雇佣兵组织“北极狼”绑架，秦的女儿Fareeda（徐若晗饰）也卷入其中，遭到追杀。千钧一发之际，急先锋国际安保团队成为他们仅有的希望，由总指挥唐焕庭（成龙饰）带领雷震宇（杨洋饰）、张凯旋（艾伦饰）、弥雅（母其弥雅饰）、神雕（朱正廷饰）等组成的急先锋行动小组，上天入地，辗转全球各地施展惊险营救。而在解救人质的过程中，还发现了“北极狼”背后的犯罪集团策划的一场惊天密谋。</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/5.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">七号房的礼物</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>生活片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"7.8\"><strong>7.8</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《7号房的礼物》<br>是由李焕庆执导，柳承龙、葛素媛、郑进永、朴信惠等主演的喜剧电影。影片讲述了蒙受不白之冤入狱的李龙久和为了给父亲洗去冤屈而不懈努力的女儿之间的故事。该片于2013年1月23日在韩国上映。并成为2013年韩国电影票房排名第一。<br><br>1997年，只有6岁儿童智商的智障男子李海报海报(12张)龙久（柳承龙饰）和可爱的女儿艺胜（葛素媛饰）相依为命，生活虽然简单清贫，却充满幸福。某天，执着为女儿买美少女战士书包的龙久意外卷入一起幼童诱拐奸杀案，而死者竟是警察局长的女儿。龙久懵懂无知，搞不清状况，昏头昏脑就被投入监狱。在7号牢房中，聚集着走私犯苏杨浩、诈骗犯崔春浩、通奸犯姜万范、恐吓犯老徐和抢劫犯申奉植等五毒俱全的“社会渣滓”。龙久孩子般纯洁的心渐渐感动了这几个“大坏蛋”，他们甚至不惜冒险将艺胜带入牢房与父亲相会。黑暗冰冷的监牢内，7号牢房阳光满满。</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/6.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">天道王</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>战争片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"7.5\"><strong>7.5</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《天道王》<br>是一部由缘世达国际影视文化传媒(北京)公司、奇雪文化投影城有限公司联合出品，苑本立执导，巩峥、陶红、杨钧丞、刘楚玄主演的电影。《天道王》以中国东北猎人加入抗日联军,与日军展开惨烈战斗为故事主线。主要讲述了抗战时期，东北深山老林猎人为了小家，为了国家奋起抗日英勇杀敌，为掩护东北抗联总部撤退，顽强阻击日军，谱写惊天动地抗日史诗的故事。东北抗日联军“十二烈士小孤山阻击战”和“李炮营阻击战”的原型故事；平民视角的东北猎人抗日；强情节、超反转的生死阻击。<br><br>《天道王》以东北抗日联军为史料,以中国抗日战役中以少胜多最著名一次战役——“烈士山战役”为渊源,主要讲述了抗战时期,东北山野猎人奋起抗日救国,义勇军战败后猎人返山继续游猎生活,又谱写惊天动地抗日史诗的故事。 [1]  不愿做亡国奴的猎人们,1937年在抗联的感召下加入了抗联举起抗日救国大旗,成为主力,与日军斗智斗勇。1938年日军蓄谋大讨伐,猎人出身的十二名战士用生命全力阻击敌人,为抗联总部突围和群众转移赢得宝贵时间。</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board.html\"><img data-action=\"zoom\" src=\"../images/property/7.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">一点就到家</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>生活片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"6.5\"><strong>6.5</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《一点就到家》<br>是由陈可辛监制，许宏宇执导，刘昊然、彭昱畅、尹昉领衔主演的农村题材喜剧片。该片讲述了三个性格迥异的年轻人从大城市回到云南千年古寨开启创业旅程的故事。<br><br>魏晋北（刘昊然 饰）、彭秀兵（彭昱畅 饰）、李绍群（尹昉 饰）三个性格迥异的年轻人从大城市回到云南千年古寨，机缘巧合下合伙干电商。三个年轻人在走弯路后，一拍即合携手开启创业之旅，他们明白了电商下乡，不仅仅是把城里面的东西卖到农村来，也是要把农村的东西卖出去。与古寨“格格不入”的他们用真诚改变了所有人，开启了一段纯真且荒诞的创业旅程。</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n                <div class=\"col-lg-3 col-sm-6 layout-item-wrap\">\r\n                    <article class=\"property layout-item clearfix\">\r\n                        <figure class=\"feature-image\">\r\n                            <a class=\"clearfix zoom\" href=\"board\"><img data-action=\"zoom\" src=\"../images/property/8.jpg\" width=\"240px\" /></a>\r\n                        </figure>\r\n                        <div class=\"property-contents clearfix\">\r\n                            <header class=\"property-header clearfix\">\r\n                                <div class=\"pull-left\">\r\n                                    <h6 class=\"entry-title\">喜宝</h6>\r\n                                    <span class=\"property-location\">\r\n                                      <i class=\"fa fa-map-marker\"></i>生活片\r\n                                    </span>\r\n                                </div>\r\n                                <button class=\"btn btn-warning pull-right\" data-hover=\"6.3\"><strong>6.3</strong></button>\r\n                            </header>\r\n                            <div class=\"contents clearfix\">\r\n                                <p>《喜宝》<br>《喜宝》是由北京日光鼎盛影视文化有限公司、北京轴心影视文化有限公司出品的作品，王丹阳执导，郭采洁、张国柱主演。该片根据著名作家亦舒的原著同名小说改编的电影，讲述了成绩优异但家境贫寒的剑桥学生姜喜宝在飞机上认识了富家女勖聪慧，此后更是被其父亲和兄长追求，最终与其父勖存姿展开一段恋情，命运也因此彻底改变的故事。<br><br>喜宝（郭采洁饰）因家庭困境中止了英国学业返回国内，在飞机上结识了单纯可爱的富家千金勖聪慧（李彦漫 饰），回国后先后遭遇了母亲过世、从未见过的父亲上门索要钱财，被房东赶出无家可归。勖家帮助喜宝摆脱了困境，同时喜宝也深陷勖家男人的感情旋涡。曾经想要很多很多爱的喜宝，忽然拥有了选择很多很多钱的机会，年轻的喜宝能否明白爱情的真谛……</p>\r\n                            </div>\r\n                        </div>\r\n                    </article>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div>\r\n            <ul id=\"pagination\" class=\"text-center clearfix\">\r\n                <li class=\"disabled\"><a href=\"#\">上页</a></li>\r\n                <li><a href=\"#\">1</a></li>\r\n                <li><a href=\"#\">2</a></li>\r\n                <li><a href=\"#\">3</a></li>\r\n                <li><a href=\"#\">4</a></li>\r\n                <li><a href=\"#\">下页</a></li>\r\n            </ul>\r\n        </div>\r\n    </section>\r\n    <a href=\"#top\" id=\"scroll-top\"><i class=\"fa fa-angle-up\"></i></a>\r\n    <script src=\"../js/jquery.min.js\"></script>\r\n    <script src=\"../js/theme.js\"></script>\r\n</body>\r\n\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/customer/board.html b/src/main/webapp/customer/board.html
+--- a/src/main/webapp/customer/board.html	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/webapp/customer/board.html	(date 1686223362787)
+@@ -8,6 +8,104 @@
+     <link rel="stylesheet" href="../css/font-awesome.min.css" />
+     <link rel="stylesheet" href="../css/bootstrap.css" />
+     <link rel="stylesheet" href="../css/theme.css" />
++    <script type="text/javascript">
++        UrlParm = function() { // url参数
++            var data, index;
++            (function init() {
++                data = [];
++                index = {};
++                var u = window.location.search.substr(1);
++                if (u != '') {
++                    var parms = decodeURIComponent(u).split('&');
++                    for (var i = 0, len = parms.length; i < len; i++) {
++                        if (parms[i] != '') {
++                            var p = parms[i].split("=");
++                            if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=
++                                data.push([ '' ]);
++                                index[p[0]] = data.length - 1;
++                            } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =
++                                data[0] = [ p[1] ];
++                            } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa
++                                data.push([ p[1] ]);
++                                index[p[0]] = data.length - 1;
++                            } else {// c=aaa
++                                data[index[p[0]]].push(p[1]);
++                            }
++                        }
++                    }
++                }
++            })();
++            return {
++                // 获得参数
++                parm : function(o) { // o: 参数名或者参数次序
++                    try {
++                        return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);
++                    } catch (e) {
++                    }
++                },
++                //获得参数组, 类似request.getParameterValues()
++                parmValues : function(o) { //  o: 参数名或者参数次序
++                    try {
++                        return (typeof (o) == 'number' ? data[o] : data[index[o]]);
++                    } catch (e) {
++                    }
++                },
++                //是否含有parmName参数
++                hasParm : function(parmName) {
++                    return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;
++                },
++                // 获得参数Map ,类似request.getParameterMap()
++                parmMap : function() {
++                    var map = {};
++                    try {
++                        for ( var p in index) {
++                            map[p] = data[index[p]];
++                        }
++                    } catch (e) {
++                    }
++                    return map;
++                }
++            }
++        }();
++
++        function get(){
++            var cus_id = UrlParm.parm("cus_id");
++            window.location="schedule.html?play_id=1&cus_id="+cus_id;
++        }
++
++        function search(){
++            var url = "../PlayServlet";
++            if (window.XMLHttpRequest)
++                req = new XMLHttpRequest();
++            else if (window.ActiveXObject)
++                req = new ActiveXObject("Microsoft.XMLHTTP");
++            if (req) {
++                //采用POST方式，异步传输
++                req.open("post", url, true);
++                //POST方式，必须加入如下头信息设定
++                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
++                req.onreadystatechange = searchComplete;
++                req.send("type=search&name="+document.getElementById("playname").value);
++            }
++        }
++
++        function searchComplete() {
++            var cus_id = UrlParm.parm("cus_id");
++            if (req.readyState == 4 && req.status == 200) {
++                var json =  JSON.parse(req.responseText);//转换为json对象
++                for(i=0; i<json.length; i++) {
++                    document.write('<img src="../'+json[i].play_image+'"/>');
++                    document.write( '<a href="schedule.html?play_id='
++                        +json[i].play_id
++                        +"&cus_id="+cus_id+'">' +
++                        '<font class="btn btn-primary" >购票</font></a>')
++                }
++            }
++        }
++        function init(){
++            search()
++        }
++    </script>
+ </head>
+ 
+ <body class="listing-template">
+@@ -15,7 +113,7 @@
+         <div class="container">
+             <div class="row">
+                 <div class="col-md-2" style="margin:5px">
+-                    <a href="index.html"><img src="../images/logo.png" width="127" height="48"/></a>
++                    <a href="index.html"><img src="../images/logo/totologo1.png" width="127" height="48"/></a>
+                 </div>
+                 <div class="col-md-5 col-sm-8">
+                     <nav id="site-nav" class="nav navbar-default">
+@@ -23,7 +121,7 @@
+                             <li><a href="index.html">主页</a></li>
+                             <li><a href="board.html">榜单</a></li>
+                             <li><a href="contact.html">联系我们</a></li>
+-                            <li><a href="login.html">登录</a></li>
++
+                         </ul>
+                     </nav>
+                 </div>
+Index: src/main/webapp/customer/contact.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"zh\">\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <title>汉唐剧院管理系统-联系我们</title>\r\n    <link rel=\"stylesheet\" href=\"../css/font-awesome.min.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/slick.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/slicknav.css\" >\r\n    <link rel=\"stylesheet\" href=\"../css/animate.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/bootstrap.css\">\r\n    <link rel=\"stylesheet\" href=\"../css/theme.css\">\r\n\r\n</head>\r\n<body class=\"contact-template\">\r\n<header id=\"site-header\">\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-2\" style=\"margin:5px\">\r\n            <a href=\"index.html\"><img src=\"../images/logo.png\" width=\"127\" height=\"48\"/></a>\r\n            </div>\r\n            <div class=\"col-md-5 col-sm-8\">\r\n                <nav id=\"site-nav\" class=\"nav navbar-default\">\r\n                    <ul class=\"nav navbar-nav\">\r\n                        <li><a href=\"index.html\">主页</a></li>\r\n                        <li><a href=\"board.html\">榜单</a></li>\r\n                        <li><a href=\"contact.html\">联系我们</a></li>\r\n                        <li><a href=\"login.jsp\">登陆</a></li>\r\n                    </ul>\r\n                </nav>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</header>\r\n<div id=\"site-banner\" class=\"text-center clearfix\">\r\n    <div class=\"container\">\r\n        <h1 class=\"title wow slideInLeft\">联系我们</h1>\r\n    </div>\r\n</div>\r\n<div id=\"contact-page\" class=\"contact-page-var-one\">\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">\r\n                <div class=\"contact-form-wrapper\">\r\n                    <h3 class=\"entry-title\">联系我们</h3>\r\n                    <div class=\"contents\">\r\n                        <p>您可以发送建议给我，我们会即时联系您。</p>\r\n                    </div>\r\n                    <form action=\"form-handler.php\" method=\"post\" class=\"contact-form\">\r\n                        <p class=\"form-author common\">\r\n                            <input id=\"author\" name=\"name\" type=\"text\" placeholder=\"姓名 *\" aria-required=\"true\" required=\"required\">\r\n                        </p>\r\n                        <p class=\"form-email common\">\r\n                            <input id=\"email\" name=\"email\" type=\"text\" placeholder=\"电子邮件 *\" aria-describedby=\"email-notes\" aria-required=\"true\" required=\"required\">\r\n                        </p>\r\n                        <p class=\"form-phone common\">\r\n                            <input id=\"phone\" name=\"phone\" type=\"text\" placeholder=\"电话 *\" aria-required=\"true\" required=\"required\" >\r\n                        </p>\r\n                        <p class=\"form-subject common\">\r\n                            <input id=\"subject\" name=\"subject\" type=\"text\" placeholder=\"主题\" aria-required=\"true\" required=\"required\">\r\n                        </p>\r\n                        <p class=\"form-comment\">\r\n                            <textarea id=\"message\" name=\"message\" placeholder=\"意见与建议\" cols=\"45\" rows=\"4\" aria-required=\"true\" required=\"required\"></textarea>\r\n                        </p>\r\n                        <p class=\"form-submit\">\r\n                            <button type=\"submit\" id=\"submit-button\" class=\"submit-btn btn btn-primary btn-lg\" data-hover=\"发送\">发送</button>\r\n                        </p>\r\n                        <div id=\"error-container\"></div>\r\n                        <div id=\"message-container\"></div>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n                <div class=\"contact-page-contents clearfix\">\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-6\">\r\n                            <i class=\"fa fa-map-marker\"></i>\r\n                            <div class=\"contents\">\r\n                                <h6 class=\"title\">邮寄地址</h6>\r\n                                <address> 西安市长安区西长安街618号东区计算机学院</address>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"col-md-6\">\r\n                            <i class=\"fa fa-phone\"></i>\r\n                            <div class=\"contents\">\r\n                                <h5 class=\"title\">联系方式</h5>\r\n                                <ul>\r\n                                    <li>电话: 029-88166712</li>\r\n                                    <li>邮箱: shuxf@xiyou.edu.cn</li>\r\n                                </ul>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div id=\"map-canvas\"></div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<a href=\"#top\" id=\"scroll-top\"><i class=\"fa fa-angle-up\"></i></a>\r\n<script src=\"../js/jquery.min.js\"></script>\r\n<script src=\"../js/jquery-ui.min.js\"></script>\r\n<script src=\"../js/jquery.form.min.js\"></script>\r\n<script src=\"../js/jquery.validate.min.js\"></script>\r\n<script src=\"../js/theme.js\"></script>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/customer/contact.html b/src/main/webapp/customer/contact.html
+--- a/src/main/webapp/customer/contact.html	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/webapp/customer/contact.html	(date 1686223362792)
+@@ -4,7 +4,7 @@
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+-    <title>汉唐剧院管理系统-联系我们</title>
++    <title>Toto剧院管理系统-联系我们</title>
+     <link rel="stylesheet" href="../css/font-awesome.min.css">
+     <link rel="stylesheet" href="../css/slick.css">
+     <link rel="stylesheet" href="../css/slicknav.css" >
+@@ -18,7 +18,7 @@
+     <div class="container">
+         <div class="row">
+             <div class="col-md-2" style="margin:5px">
+-            <a href="index.html"><img src="../images/logo.png" width="127" height="48"/></a>
++            <a href="index.html"><img src="../images/logo/totologo1.png" width="127" height="48"/></a>
+             </div>
+             <div class="col-md-5 col-sm-8">
+                 <nav id="site-nav" class="nav navbar-default">
+@@ -26,7 +26,7 @@
+                         <li><a href="index.html">主页</a></li>
+                         <li><a href="board.html">榜单</a></li>
+                         <li><a href="contact.html">联系我们</a></li>
+-                        <li><a href="login.jsp">登陆</a></li>
++<!--                        <li><a href="login.html">登陆</a></li>-->
+                     </ul>
+                 </nav>
+             </div>
+Index: src/main/webapp/customer/index1.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/customer/index1.html b/src/main/webapp/customer/index1.html
+new file mode 100644
+--- /dev/null	(date 1686224438667)
++++ b/src/main/webapp/customer/index1.html	(date 1686224438667)
+@@ -0,0 +1,230 @@
++<!DOCTYPE html>
++<html lang="zh">
++<head>
++ <meta charset="utf-8" />
++ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
++ <meta name="viewport" content="width=device-width, initial-scale=1" />
++ <title>Toto剧院管理系统-首页</title>
++
++
++ <meta charset="utf-8">
++ <meta http-equiv="X-UA-Compatible" content="IE=edge">
++ <meta name="viewport" content="width=device-width, initial-scale=1">
++ <link rel="stylesheet" href="../css/font-awesome.min.css">
++ <link rel="stylesheet" href="../css/slick.css">
++ <link rel="stylesheet" href="../css/slicknav.css" >
++ <link rel="stylesheet" href="../css/animate.css">
++ <link rel="stylesheet" href="../css/bootstrap.css">
++ <link rel="stylesheet" href="../css/theme.css">
++
++
++
++
++
++ <script type="text/javascript">
++  UrlParm = function() { // url参数
++   var data, index;
++   (function init() {
++    data = [];
++    index = {};
++    var u = window.location.search.substr(1);
++    if (u != '') {
++     var parms = decodeURIComponent(u).split('&');
++     for (var i = 0, len = parms.length; i < len; i++) {
++      if (parms[i] != '') {
++       var p = parms[i].split("=");
++       if (p.length == 1 || (p.length == 2 && p[1] == '')) {// p | p=
++        data.push([ '' ]);
++        index[p[0]] = data.length - 1;
++       } else if (typeof (p[0]) == 'undefined' || p[0] == '') { // =c | =
++        data[0] = [ p[1] ];
++       } else if (typeof (index[p[0]]) == 'undefined') { // c=aaa
++        data.push([ p[1] ]);
++        index[p[0]] = data.length - 1;
++       } else {// c=aaa
++        data[index[p[0]]].push(p[1]);
++       }
++      }
++     }
++    }
++   })();
++   return {
++    // 获得参数
++    parm : function(o) { // o: 参数名或者参数次序
++     try {
++      return (typeof (o) == 'number' ? data[o][0] : data[index[o]][0]);
++     } catch (e) {
++     }
++    },
++    //获得参数组, 类似request.getParameterValues()
++    parmValues : function(o) { //  o: 参数名或者参数次序
++     try {
++      return (typeof (o) == 'number' ? data[o] : data[index[o]]);
++     } catch (e) {
++     }
++    },
++    //是否含有parmName参数
++    hasParm : function(parmName) {
++     return typeof (parmName) == 'string' ? typeof (index[parmName]) != 'undefined' : false;
++    },
++    // 获得参数Map ,类似request.getParameterMap()
++    parmMap : function() {
++     var map = {};
++     try {
++      for ( var p in index) {
++       map[p] = data[index[p]];
++      }
++     } catch (e) {
++     }
++     return map;
++    }
++   }
++  }();
++
++  function get(){
++   var cus_id = UrlParm.parm("cus_id");
++   window.location="schedule.html?play_id=1&cus_id="+cus_id;
++  }
++
++  function search(){
++   var url = "../PlayServlet";
++   if (window.XMLHttpRequest)
++    req = new XMLHttpRequest();
++   else if (window.ActiveXObject)
++    req = new ActiveXObject("Microsoft.XMLHTTP");
++   if (req) {
++    //采用POST方式，异步传输
++    req.open("post", url, true);
++    //POST方式，必须加入如下头信息设定
++    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
++    req.onreadystatechange = searchComplete;
++    req.send("type=search&name="+document.getElementById("playname").value);
++   }
++  }
++
++  function searchComplete() {
++   var cus_id = UrlParm.parm("cus_id");
++   if (req.readyState == 4 && req.status == 200) {
++    var json =  JSON.parse(req.responseText);//转换为json对象
++
++       document.write('<h1>请选择你想看的影片</h1>' +
++           '<div style="display: flex ;flex-wrap: wrap">');
++    for(i=0; i<json.length; i++)
++    {
++        document.write(
++            '<div style = "width: 18vw;height: 40vh;f" >'+
++                '<div style = "width: 200px;margin: auto" >'+
++                    '<img src="../'+json[i].play_image+'" style="border-radius: 10px" width="200"/>'+
++                '</div>'+
++                '<div style="width: 50px"></div>'+
++                '<div style="width: 200px;margin: auto;background-color: #337ab7;border-radius: 6px">'+
++                    '<h3 style="width: 50px;color: #FFFFFF;margin: auto;" href="schedule.html?play_id=' +json[i].play_id +"&cus_id="+cus_id+'"> 购票</h3>'+
++                '</div>'+
++            '</div>'
++            );
++     }
++    document.write('</div>');
++   }
++  }
++  function init(){
++   search()
++  }
++ </script>
++</head>
++
++<body class="" >
++
++<header id="site-header">
++
++
++
++ <div class="container">
++  <div class="row">
++   <div class="col-md-2" style="margin:5px">
++    <a href="index.html"><img src="../images/logo/totologo1.png" width="127" height="48" /></a>
++   </div>
++   <div class="col-md-9">
++    <nav id="site-nav" class="nav navbar-default">
++     <ul class="nav navbar-nav">
++      <li><a href="index.html">主页</a></li>
++      <li><a href="board.html">榜单</a></li>
++      <li><a href="contact.html">联系我们</a></li>
++     </ul>
++    </nav>
++   </div>
++  </div>
++ </div>
++
++
++
++ <!--搜索-->
++ <div id="advance-search" class="main-page clearfix">
++  <div class="container">
++   <a  class="btn-primary" onclick="init()">快速购票</a>
++   <form action="../../PlayServlet" type="search" id="adv-search-form" class="clearfix">
++    <h1 class="title wow slideInLeft">搜一下</h1>
++    <input type="text" id="playname" name="playname" placeholder="请输入剧目名：" aria-required="true" required="required">
++    <button type="submit" class="btn btn-primary btn-lg">查询</button>
++   </form>
++  </div>
++ </div>
++
++ <!--轮播图-->
++</header>
++<div class="main-slider-wrapper clearfix">
++ <div id="main-slider">
++  <div class="slide"><img src="../images/slider/1.jpg" /></div>
++  <div class="slide"><img src="../images/slider/2.jpg" /></div>
++  <div class="slide"><img src="../images/slider/3.jpg" /></div>
++<!--  <div class="slide"><img src="../images/slider/4.png" width="1920" height="420"/></div>-->
++ </div>
++ <div id="slider-contents">
++  <div class="container text-center">
++   <div class="jumbotron">
++    <h1>寻找您的理想剧目</h1>
++    <div class="contents clearfix">
++     <p>汉唐剧院是观众喜爱的观影平台，为您提供了在线详情服务。<br />
++      同时还为您提供剧目预告片、票房查询、剧目排行榜、剧目资讯等信息。</p>
++    </div>
++   </div>
++  </div>
++ </div>
++</div>
++
++
++
++<!--联系信息-->
++<footer id="footer">
++ <div class="site-footer">
++  <div class="container">
++   <div class="row">
++    <div class="col-md-4 col-sm-6">
++     <section class="widget address-widget clearfix">
++      <h4 class="title">联系方式</h4>
++      <ul>
++       <li>
++        <i class="fa fa-map-marker"></i>
++        <a href="http://cs.xiyou.edu.cn/">西安市长安区西长安街618号东区计算机学院</a>
++       </li>
++       <li><i class="fa fa-phone"></i>029-2147483648</li>
++       <li><i class="fa fa-envelope"></i> tuto2147483648@666.com</li>
++       <li>@ Copyright &copy; 2023. 西安邮电大学计算机学院.</li>
++      </ul>
++     </section>
++    </div>
++   </div>
++  </div>
++ </div>
++</footer>
++
++<a href="#top" id="scroll-top"><i class="fa fa-angle-up"></i></a>
++<script src="../js/jquery.min.js"></script>
++<script src="../js/bootstrap.min.js"></script>
++<script src="../js/slick.min.js"></script>
++<script src="../js/zoom.js"></script>
++<script src="../js/theme.js"></script>
++<script src="../js/jquery-ui.min.js"></script>
++<script src="../js/jquery.form.min.js"></script>
++<script src="../js/jquery.validate.min.js"></script>
++</body>
++</html>
+\ No newline at end of file
+Index: src/main/resources/jdbc.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#driver = com.mysql.cj.jdbc.Driver\r\n#url = jdbc:mysql://localhost/ttms?useUnicode=true&characterEncoding=utf-8&useSSL=false\r\n#username = root\r\n#password = 1111\r\n\r\n#driverClassName=com.mysql.jdbc.Driver\r\ndriver=com.mysql.cj.jdbc.Driver\r\nurl: jdbc:mysql://localhost:3306/ttms?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC\r\n#url=jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&serverTimezone=GMT%2B8\r\nusername=root\r\npassword=1111\r\n#initial connection Size\r\ninitialSize=10\r\n#min idle connecton size\r\nminIdle=5\r\n#max active connection size\r\nmaxActive=50\r\n#max wait time (5000 mil seconds)\r\nmaxWait=5000
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/jdbc.properties b/src/main/resources/jdbc.properties
+--- a/src/main/resources/jdbc.properties	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/resources/jdbc.properties	(date 1686223362798)
+@@ -8,7 +8,7 @@
+ url: jdbc:mysql://localhost:3306/ttms?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+ #url=jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&serverTimezone=GMT%2B8
+ username=root
+-password=1111
++password=184496
+ #initial connection Size
+ initialSize=10
+ #min idle connecton size
+Index: src/main/resources/druid.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#key=value\r\n\r\n#driver-class-name: com.mysql.cj.jdbc.Driver\r\n#jdbc-url: jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC\r\n#com.mysql.cj.jdbc.Driver;\r\n#driverClassName=com.mysql.jdbc.Driver\r\ndriverClassName=com.mysql.cj.jdbc.Driver\r\nurl: jdbc:mysql://localhost:3306/ttms?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC\r\n#url=jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&serverTimezone=GMT%2B8\r\nusername=root\r\npassword=1111\r\n#initial connection Size\r\ninitialSize=10\r\n#min idle connecton size\r\nminIdle=5\r\n#max active connection size\r\nmaxActive=50\r\n#max wait time (5000 mil seconds)\r\nmaxWait=5000
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/druid.properties b/src/main/resources/druid.properties
+--- a/src/main/resources/druid.properties	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/resources/druid.properties	(date 1686223362803)
+@@ -4,11 +4,11 @@
+ #jdbc-url: jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+ #com.mysql.cj.jdbc.Driver;
+ #driverClassName=com.mysql.jdbc.Driver
+-driverClassName=com.mysql.cj.jdbc.Driver
++driver=com.mysql.cj.jdbc.Driver
+ url: jdbc:mysql://localhost:3306/ttms?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+ #url=jdbc:mysql://localhost:3306/home_furnishing?useSSL=false&serverTimezone=GMT%2B8
+ username=root
+-password=1111
++password=184496
+ #initial connection Size
+ initialSize=10
+ #min idle connecton size
+Index: src/main/java/xupt/se/ttms/controller/scheduleServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package xupt.se.ttms.controller;\r\n\r\n\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.sql.Timestamp;\r\nimport java.util.Date;\r\nimport java.util.List;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport xupt.se.ttms.dao.ScheduleDAO;\r\nimport xupt.se.ttms.dao.StudioDAO;\r\nimport xupt.se.ttms.model.Schedule;\r\nimport xupt.se.ttms.model.Studio;\r\nimport xupt.se.ttms.service.ScheduleSrv;\r\nimport xupt.se.ttms.service.StudioSrv;\r\nimport xupt.se.ttms.service.TicketSrv;\r\n\r\n@WebServlet(\"/ScheduleServlet\")\r\npublic class ScheduleServlet extends HttpServlet\r\n{\r\n    private static final long serialVersionUID=1L;\r\n\r\n    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        doPost(request, response);\r\n    }\r\n\r\n    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        String type=request.getParameter(\"type\");\r\n\r\n        // 根据请求操作类型，执行相应的增、删、该、查\r\n        if(type.equalsIgnoreCase(\"add\"))\r\n            add(request, response);\r\n        else if(type.equalsIgnoreCase(\"delete\"))\r\n            delete(request, response);\r\n        else if(type.equalsIgnoreCase(\"update\"))\r\n            update(request, response);\r\n        else if(type.equalsIgnoreCase(\"search\"))\r\n            search(request, response);\r\n    }\r\n\r\n    private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        Schedule schedule=null;\r\n        try\r\n        {\r\n            int studio_id=Integer.parseInt(request.getParameter(\"studio_id\"));\r\n            int play_id=Integer.parseInt(request.getParameter(\"play_id\"));\r\n            Timestamp sched_time= Timestamp.valueOf(request.getParameter(\"sched_time\"));\r\n            double sched_ticket_price = Integer.parseInt(request.getParameter(\"sched_ticket_price\"));\r\n            int sched_status = Integer.parseInt(request.getParameter(\"sched_status\"));\r\n            schedule = new Schedule(0,studio_id, play_id, sched_time, sched_ticket_price, sched_status);\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            PrintWriter out=response.getWriter();\r\n            int sched_id = 0;\r\n            int first_seat_id=0;\r\n            if((new ScheduleSrv().add(schedule)) != 0) {\r\n                sched_id=new ScheduleDAO().selectshed_id();\r\n                first_seat_id=new ScheduleDAO().first_seat_id(studio_id);\r\n                System.out.println(sched_id);\r\n                out.write(\"数据添加成功\");\r\n                //拿到演出厅id -> 查询到演出厅的行和列 ->根据行和列生成演出计划票 标记为未售出 等待顾客买票\r\n                List<Studio> stu = new StudioSrv().QuerybyId(studio_id);\r\n                //根据演出计划生成票\r\n                int colCount=0;\r\n                int rowCount=0;\r\n                for(Studio studio:stu){\r\n                    rowCount=studio.getRowCount();\r\n                    colCount=studio.getColCount();\r\n                }\r\n                for(int i = 0; i <colCount ; i++) {\r\n                    for(int j = 0; j < rowCount; j++){\r\n                        new ScheduleSrv().insert_ticket(first_seat_id+i*j,sched_id,sched_ticket_price);\r\n                    }\r\n                }\r\n            }\r\n            else\r\n                out.write(\"数据添加失败，请重试\");\r\n            out.close();\r\n        }\r\n        catch(Exception e)\r\n        {\r\n            e.printStackTrace();\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            response.getWriter().write(\"操作错误，请重试\");\r\n        }\r\n    }\r\n\r\n    private void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        try\r\n        {\r\n            int id=Integer.parseInt(request.getParameter(\"sched_id\"));\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            PrintWriter out=response.getWriter();\r\n            //删除演出计划->查看是否能删除 （是否有已售出的票，如有已售出的票必须先完成退票 保证票状态 ticket_status = 0;\r\n            if(new TicketSrv().Check_ticket_status(id) == 1) {\r\n             //不存在已售出票 ，可以删除\r\n                out.write( new ScheduleSrv().delete(id));\r\n            }else {\r\n                //存在已售出票 不能删除 可以先完成退票\r\n                //给出提示\r\n                response.getWriter().write(\"请先完成该演出计划所有已售出票的退票\");\r\n            }\r\n            //如果该演出票状态全  ticket_status = 0 删除所有演出计划所产生的票\r\n            out.close();\r\n        }\r\n        catch(Exception e)\r\n        {\r\n            e.printStackTrace();\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            response.getWriter().write(\"操作错误，请重试\");\r\n        }\r\n    }\r\n\r\n    private void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        Schedule schedule=null;\r\n        int sched_id=0;\r\n        try\r\n        {\r\n            sched_id=Integer.valueOf(request.getParameter(\"sched_id\"));\r\n            int studio_id=Integer.valueOf(request.getParameter(\"studio_id\"));\r\n            int play_id=Integer.valueOf(request.getParameter(\"play_id\"));\r\n            Timestamp sched_time=Timestamp.valueOf(request.getParameter(\"sched_time\"));\r\n            double sched_ticket_price = Integer.valueOf(request.getParameter(\"sched_ticket_price\"));\r\n            int sched_status=Integer.valueOf(request.getParameter(\"sched_status\"));\r\n            schedule=new Schedule(sched_id,studio_id,play_id,sched_time,sched_ticket_price,sched_status);\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            PrintWriter out=response.getWriter();\r\n\r\n            if(new ScheduleSrv().modify(schedule) == 1) {\r\n                out.write(\"数据修改成功\");\r\n                //根据演出计划修改票 前提没有已售出的票\r\n                if(new TicketSrv().Check_ticket_status(sched_id) ==1) {//没有以售出的票 可以修改演出计划信息\r\n//                    int colCount = new StudioSrv().QuerybyId(studio_id).getColCount();\r\n//                    int rowCount = new StudioSrv().QuerybyId(studio_id).getRowCount();\r\n                    List<Studio> stu = new StudioSrv().QuerybyId(4);\r\n                    int colCount=0;\r\n                    int rowCount=0;\r\n                    for(Studio studio:stu){\r\n                        rowCount=studio.getRowCount();\r\n                        colCount=studio.getColCount();\r\n                    }\r\n                    for (int i = 0; i < rowCount; i++) {\r\n                        for (int j = 0; j < colCount; j++) {\r\n                            new TicketSrv().Update_ticket(i * j, sched_id, studio_id, sched_ticket_price);\r\n                        }\r\n                    }\r\n                }else {\r\n                    response.getWriter().write(\"数据修改失败存在已出售的该票\");\r\n                }\r\n\r\n            }\r\n            else\r\n                out.write(\"数据修改失败，请重试\");\r\n\r\n            out.close();\r\n        }\r\n        catch(Exception e)\r\n        {\r\n            e.printStackTrace();\r\n            response.setContentType(\"text/html;charset=utf-8\");\r\n            response.getWriter().write(\"操作错误，请重试\");\r\n        }\r\n    }\r\n\r\n    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException\r\n    {\r\n        response.setCharacterEncoding(\"UTF-8\");\r\n        PrintWriter out=response.getWriter();\r\n        int id= Integer.parseInt(request.getParameter(\"sched_id\"));\r\n        List<Schedule> result=null;\r\n\r\n        if(id!=-1)\r\n            result=new ScheduleSrv().Fetch(id);\r\n        else {\r\n            result = new ScheduleSrv().FetchAll();\r\n        }\r\n        String jsonStr=\"\";\r\n        try\r\n        {\r\n            JSONArray array=new JSONArray();\r\n            JSONObject json;\r\n            for(Schedule s : result)\r\n            {\r\n\r\n                json=new JSONObject();\r\n                json.put(\"sched_id\", s.getSched_id());\r\n                json.put(\"studio_id\", s.getStudio_id());\r\n                json.put(\"play_id\", s.getPlay_id());\r\n                json.put(\"sched_time\", s.getSched_time());\r\n                json.put(\"sched_ticket_price\", s.getSched_ticket_price());\r\n                json.put(\"sched_status\", s.getSched_status());\r\n                array.put(json);\r\n            }\r\n\r\n            jsonStr=array.toString();\r\n            //System.out.println(jsonStr);\r\n        }\r\n        catch(JSONException e)\r\n        {\r\n            e.printStackTrace();\r\n        }\r\n        finally\r\n        {\r\n            out.println(jsonStr);\r\n            out.flush();\r\n            out.close();\r\n        }\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/xupt/se/ttms/controller/scheduleServlet.java b/src/main/java/xupt/se/ttms/controller/scheduleServlet.java
+--- a/src/main/java/xupt/se/ttms/controller/scheduleServlet.java	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/java/xupt/se/ttms/controller/scheduleServlet.java	(date 1686223362040)
+@@ -1,10 +1,8 @@
+ package xupt.se.ttms.controller;
+ 
+-
+ import java.io.IOException;
+ import java.io.PrintWriter;
+ import java.sql.Timestamp;
+-import java.util.Date;
+ import java.util.List;
+ 
+ import javax.servlet.ServletException;
+@@ -17,17 +15,14 @@
+ import org.json.JSONException;
+ import org.json.JSONObject;
+ 
+-import xupt.se.ttms.dao.ScheduleDAO;
+-import xupt.se.ttms.dao.StudioDAO;
++import xupt.se.ttms.model.Resource;
+ import xupt.se.ttms.model.Schedule;
+-import xupt.se.ttms.model.Studio;
++import xupt.se.ttms.service.ResourceSrv;
+ import xupt.se.ttms.service.ScheduleSrv;
+-import xupt.se.ttms.service.StudioSrv;
+-import xupt.se.ttms.service.TicketSrv;
+ 
+ @WebServlet("/ScheduleServlet")
+-public class ScheduleServlet extends HttpServlet
+-{
++public class ScheduleServlet extends HttpServlet {
++
+     private static final long serialVersionUID=1L;
+ 
+     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+@@ -37,6 +32,7 @@
+ 
+     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+     {
++
+         String type=request.getParameter("type");
+ 
+         // 根据请求操作类型，执行相应的增、删、该、查
+@@ -53,40 +49,22 @@
+     private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+     {
+         Schedule schedule=null;
++        int sched_id=0;
+         try
+         {
+-            int studio_id=Integer.parseInt(request.getParameter("studio_id"));
+-            int play_id=Integer.parseInt(request.getParameter("play_id"));
++            int studio_id= Integer.parseInt(request.getParameter("studio_id"));
++            int play_id= Integer.parseInt(request.getParameter("play_id"));
+             Timestamp sched_time= Timestamp.valueOf(request.getParameter("sched_time"));
+-            double sched_ticket_price = Integer.parseInt(request.getParameter("sched_ticket_price"));
++            double sched_ticket_price= Double.parseDouble((request.getParameter("sched_ticket_price")));
+             int sched_status = Integer.parseInt(request.getParameter("sched_status"));
+-            schedule = new Schedule(0,studio_id, play_id, sched_time, sched_ticket_price, sched_status);
++            schedule=new Schedule(sched_id,studio_id,play_id,sched_time,sched_ticket_price,sched_status);
+             response.setContentType("text/html;charset=utf-8");
+             PrintWriter out=response.getWriter();
+-            int sched_id = 0;
+-            int first_seat_id=0;
+-            if((new ScheduleSrv().add(schedule)) != 0) {
+-                sched_id=new ScheduleDAO().selectshed_id();
+-                first_seat_id=new ScheduleDAO().first_seat_id(studio_id);
+-                System.out.println(sched_id);
++            if((new ScheduleSrv().add(schedule)) != 0)
+                 out.write("数据添加成功");
+-                //拿到演出厅id -> 查询到演出厅的行和列 ->根据行和列生成演出计划票 标记为未售出 等待顾客买票
+-                List<Studio> stu = new StudioSrv().QuerybyId(studio_id);
+-                //根据演出计划生成票
+-                int colCount=0;
+-                int rowCount=0;
+-                for(Studio studio:stu){
+-                    rowCount=studio.getRowCount();
+-                    colCount=studio.getColCount();
+-                }
+-                for(int i = 0; i <colCount ; i++) {
+-                    for(int j = 0; j < rowCount; j++){
+-                        new ScheduleSrv().insert_ticket(first_seat_id+i*j,sched_id,sched_ticket_price);
+-                    }
+-                }
+-            }
+             else
+                 out.write("数据添加失败，请重试");
++
+             out.close();
+         }
+         catch(Exception e)
+@@ -102,18 +80,10 @@
+         try
+         {
+             int id=Integer.parseInt(request.getParameter("sched_id"));
++            System.out.println(id);
+             response.setContentType("text/html;charset=utf-8");
+             PrintWriter out=response.getWriter();
+-            //删除演出计划->查看是否能删除 （是否有已售出的票，如有已售出的票必须先完成退票 保证票状态 ticket_status = 0;
+-            if(new TicketSrv().Check_ticket_status(id) == 1) {
+-             //不存在已售出票 ，可以删除
+-                out.write( new ScheduleSrv().delete(id));
+-            }else {
+-                //存在已售出票 不能删除 可以先完成退票
+-                //给出提示
+-                response.getWriter().write("请先完成该演出计划所有已售出票的退票");
+-            }
+-            //如果该演出票状态全  ticket_status = 0 删除所有演出计划所产生的票
++            out.write(new ScheduleSrv().delete(id));
+             out.close();
+         }
+         catch(Exception e)
+@@ -126,43 +96,33 @@
+ 
+     private void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+     {
+-        Schedule schedule=null;
+-        int sched_id=0;
++        Schedule stu=null;
++        int id=0;
+         try
+         {
+-            sched_id=Integer.valueOf(request.getParameter("sched_id"));
+-            int studio_id=Integer.valueOf(request.getParameter("studio_id"));
+-            int play_id=Integer.valueOf(request.getParameter("play_id"));
+-            Timestamp sched_time=Timestamp.valueOf(request.getParameter("sched_time"));
+-            double sched_ticket_price = Integer.valueOf(request.getParameter("sched_ticket_price"));
+-            int sched_status=Integer.valueOf(request.getParameter("sched_status"));
+-            schedule=new Schedule(sched_id,studio_id,play_id,sched_time,sched_ticket_price,sched_status);
++            id=Integer.valueOf(request.getParameter("sched_id"));
++            int t;
++            if(request.getParameter("studio_id").equals("")) {
++                t=-1;
++            }else {
++                t=Integer.valueOf(request.getParameter("studio_id"));
++            }
++            int studio_id=t;
++            if(request.getParameter("play_id").equals("")) {
++                t=-1;
++            }else {
++                t=Integer.valueOf(request.getParameter("play_id"));
++            }
++            int play_id=t;
++            Timestamp sched_time=Timestamp.valueOf(request.getParameter("sched_time")) ;
++            double sched_ticket_price=Double.valueOf(request.getParameter("sched_ticket_price"));
++            int sched_status =Integer.valueOf( request.getParameter("sched_status"));
++//            int sched_status=Integer.valueOf(request.getParameter("sched_status"));
++            stu=new Schedule(id, studio_id, play_id, sched_time, sched_ticket_price,sched_status);
+             response.setContentType("text/html;charset=utf-8");
+             PrintWriter out=response.getWriter();
+-
+-            if(new ScheduleSrv().modify(schedule) == 1) {
++            if(new ScheduleSrv().modify(stu) == 1)
+                 out.write("数据修改成功");
+-                //根据演出计划修改票 前提没有已售出的票
+-                if(new TicketSrv().Check_ticket_status(sched_id) ==1) {//没有以售出的票 可以修改演出计划信息
+-//                    int colCount = new StudioSrv().QuerybyId(studio_id).getColCount();
+-//                    int rowCount = new StudioSrv().QuerybyId(studio_id).getRowCount();
+-                    List<Studio> stu = new StudioSrv().QuerybyId(4);
+-                    int colCount=0;
+-                    int rowCount=0;
+-                    for(Studio studio:stu){
+-                        rowCount=studio.getRowCount();
+-                        colCount=studio.getColCount();
+-                    }
+-                    for (int i = 0; i < rowCount; i++) {
+-                        for (int j = 0; j < colCount; j++) {
+-                            new TicketSrv().Update_ticket(i * j, sched_id, studio_id, sched_ticket_price);
+-                        }
+-                    }
+-                }else {
+-                    response.getWriter().write("数据修改失败存在已出售的该票");
+-                }
+-
+-            }
+             else
+                 out.write("数据修改失败，请重试");
+ 
+@@ -180,12 +140,11 @@
+     {
+         response.setCharacterEncoding("UTF-8");
+         PrintWriter out=response.getWriter();
+-        int id= Integer.parseInt(request.getParameter("sched_id"));
++        int shed_id=Integer.parseInt(request.getParameter("sched_id"));
+         List<Schedule> result=null;
+-
+-        if(id!=-1)
+-            result=new ScheduleSrv().Fetch(id);
+-        else {
++        if(shed_id!=-1){
++            result= new ScheduleSrv().Fetch(shed_id);
++        }else{
+             result = new ScheduleSrv().FetchAll();
+         }
+         String jsonStr="";
+@@ -195,19 +154,15 @@
+             JSONObject json;
+             for(Schedule s : result)
+             {
+-
+                 json=new JSONObject();
+                 json.put("sched_id", s.getSched_id());
+                 json.put("studio_id", s.getStudio_id());
+                 json.put("play_id", s.getPlay_id());
+                 json.put("sched_time", s.getSched_time());
+                 json.put("sched_ticket_price", s.getSched_ticket_price());
+-                json.put("sched_status", s.getSched_status());
+                 array.put(json);
+             }
+-
+             jsonStr=array.toString();
+-            //System.out.println(jsonStr);
+         }
+         catch(JSONException e)
+         {
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ArtifactsWorkspaceSettings\">\r\n    <artifacts-to-build>\r\n      <artifact name=\"TotoTTMS:war exploded\" />\r\n    </artifacts-to-build>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"a46fec03-b1f0-46ce-bd95-1689786205ed\" name=\"Changes\" comment=\"TotoTTMS\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/ScheduleServlet.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/SeatServlet.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/PlayDAOTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/ScheduleDAOtest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/resourcedaotest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CustomerServlet.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CustomerServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/PlayServlet.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/PlayServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/StudioServlet.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/StudioServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/PlayDAO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/PlayDAO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/ScheduleDAO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/ScheduleDAO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/filter/Filter1Cors.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/filter/Filter1Cors.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iPlayDAO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iPlayDAO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iScheduleDAO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iScheduleDAO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/PlaySrv.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/PlaySrv.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/ScheduleSrv.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/ScheduleSrv.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/authority/resource.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/authority/resource.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/play.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/play.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/schedule.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/schedule.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/scheduledetail.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/studio/scheduledetail.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/user/employee.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/user/employee.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/admin/user/employeedetail.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/admin/user/employeedetail.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/schedule.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/schedule.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"HTML File\" />\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PATH_TO_GIT\" value=\"D:\\Git\\bin\\git.exe\" />\r\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\r\n      <list>\r\n        <option value=\"duhaojie\" />\r\n        <option value=\"unknown &lt;2802188750@qq.com&gt;\" />\r\n      </list>\r\n    </option>\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"LogFilters\">\r\n    <option name=\"FILTER_ERRORS\" value=\"false\" />\r\n    <option name=\"FILTER_WARNINGS\" value=\"false\" />\r\n    <option name=\"FILTER_INFO\" value=\"true\" />\r\n    <option name=\"FILTER_DEBUG\" value=\"true\" />\r\n    <option name=\"CUSTOM_FILTER\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"useMavenConfig\" value=\"true\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2QJggD4Pn8mXlS0jEaoQXNKRwag\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <OptionsSetting value=\"false\" id=\"Update\" />\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/GITTTMS02/TotoTTMS/src/main/webapp/WEB-INF/lib&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  },\r\n  &quot;keyToStringList&quot;: {\r\n    &quot;DatabaseDriversLRU&quot;: [\r\n      &quot;mysql&quot;\r\n    ],\r\n    &quot;RunConfigurationTargetLRU&quot;: [\r\n      &quot;87f76853-c89c-44d0-88c4-c4321d63ba0a&quot;,\r\n      &quot;40a2b56c-71b9-418c-bf12-39c55ddefd7a&quot;\r\n    ]\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\GITTTMS02\\TotoTTMS\\src\\main\\webapp\\WEB-INF\\lib\" />\r\n      <recent name=\"D:\\Git_Bash_FrameWork\\TotoTTMS\\src\\main\\webapp\" />\r\n      <recent name=\"D:\\Git_Bash_FrameWork\\TotoTTMS\\src\\main\\webapp\\customer\" />\r\n      <recent name=\"D:\\Git_Bash_FrameWork\\TotoTTMS\\src\\main\\webapp\\css\" />\r\n      <recent name=\"D:\\Git_Bash_FrameWork\\TotoTTMS\\src\\main\\java\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\Git_Bash_FrameWork\\TotoTTMS\\src\\main\\webapp\\images\\logo\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"xupt.se.ttms.dao\" />\r\n      <recent name=\"xupt.se.util\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Tomcat Server.Tomcat 8.0.50\">\r\n    <configuration name=\"PlayDAOTest.delete\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TotoTTMS\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"PlayDAOTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"delete\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"PlayDAOTest.delete_test\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TotoTTMS\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"PlayDAOTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"delete_test\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"PlayDAOTest.insert01\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TotoTTMS\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"PlayDAOTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"insert01\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"PlayDAOTest.update\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TotoTTMS\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"PlayDAOTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"update\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ScheduleDAOtest.Query\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TotoTTMS\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ScheduleDAOtest\" />\r\n      <option name=\"METHOD_NAME\" value=\"Query\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Tomcat 8.0.50\" type=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\" factoryName=\"Local\" APPLICATION_SERVER_NAME=\"Tomcat 8.0.50\" ALTERNATIVE_JRE_ENABLED=\"false\" nameIsGenerated=\"true\">\r\n      <option name=\"BROWSER_ID\" value=\"37cae5b9-e8b2-4949-9172-aafa37fbc09c\" />\r\n      <option name=\"UPDATING_POLICY\" value=\"redeploy-artifacts\" />\r\n      <deployment>\r\n        <artifact name=\"TotoTTMS:war exploded\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/TTMS\" />\r\n          </settings>\r\n        </artifact>\r\n      </deployment>\r\n      <server-settings>\r\n        <option name=\"BASE_DIRECTORY_NAME\" value=\"3d5ccacc-84bf-4ea5-9443-8890716d3c6d\" />\r\n      </server-settings>\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat\" />\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat Catalina\" />\r\n      <predefined_log_file id=\"Tomcat Manager\" />\r\n      <predefined_log_file id=\"Tomcat Host Manager\" />\r\n      <predefined_log_file id=\"Tomcat Localhost Access\" />\r\n      <RunnerSettings RunnerId=\"Debug\">\r\n        <option name=\"DEBUG_PORT\" value=\"51156\" />\r\n      </RunnerSettings>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Cover\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Debug\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Profile\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Run\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n        <option name=\"BuildArtifacts\" enabled=\"true\">\r\n          <artifact name=\"TTMS:war exploded\" />\r\n          <artifact name=\"TotoTTMS:war exploded\" />\r\n        </option>\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"JUnit.PlayDAOTest.delete\" />\r\n      <item itemvalue=\"JUnit.PlayDAOTest.delete_test\" />\r\n      <item itemvalue=\"JUnit.PlayDAOTest.insert01\" />\r\n      <item itemvalue=\"JUnit.PlayDAOTest.update\" />\r\n      <item itemvalue=\"JUnit.ScheduleDAOtest.Query\" />\r\n      <item itemvalue=\"Tomcat Server.Tomcat 8.0.50\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.PlayDAOTest.update\" />\r\n        <item itemvalue=\"JUnit.PlayDAOTest.delete\" />\r\n        <item itemvalue=\"JUnit.PlayDAOTest.insert01\" />\r\n        <item itemvalue=\"JUnit.ScheduleDAOtest.Query\" />\r\n        <item itemvalue=\"JUnit.PlayDAOTest.delete_test\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"a46fec03-b1f0-46ce-bd95-1689786205ed\" name=\"Changes\" comment=\"\" />\r\n      <created>1685077215890</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1685077215890</updated>\r\n      <workItem from=\"1685077218916\" duration=\"15345000\" />\r\n      <workItem from=\"1685156411119\" duration=\"27374000\" />\r\n      <workItem from=\"1685330069310\" duration=\"2092000\" />\r\n      <workItem from=\"1685404461346\" duration=\"7794000\" />\r\n      <workItem from=\"1685545084866\" duration=\"35899000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"TotoTTMS\">\r\n      <created>1685079785094</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685079785094</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"TotoTTMS\">\r\n      <created>1685082709013</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685082709013</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"TotoTTMS\">\r\n      <created>1685088527749</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685088527749</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"TotoTTMS\">\r\n      <created>1685089692027</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685089692027</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"TotoTTMS\">\r\n      <created>1685091598890</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685091598890</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"TotoTTMS\">\r\n      <created>1685092015710</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685092015710</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"TotoTTMS\">\r\n      <created>1685170744848</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685170744848</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"TotoTTMS\">\r\n      <created>1685203606043</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685203606043</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"TotoTTMS\">\r\n      <created>1685276806995</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685276806995</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"TotoTTMS\">\r\n      <created>1685324758136</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685324758136</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"TotoTTMS\">\r\n      <created>1685325546785</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685325546785</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"TotoTTMS\">\r\n      <created>1685325785205</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685325785205</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"TotoTTMS\">\r\n      <created>1685326963962</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685326963962</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"TotoTTMS\">\r\n      <created>1685329855090</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685329855090</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"TotoTTMS\">\r\n      <created>1685333392789</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685333392789</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"TotoTTMS\">\r\n      <created>1685334917947</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685334917947</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"TotoTTMS\">\r\n      <created>1685336058181</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685336058181</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"TotoTTMS\">\r\n      <created>1685586968756</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685586968756</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"19\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"TotoTTMS\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"TotoTTMS\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/main/java/xupt/se/ttms/model/Customer.java</url>\r\n          <line>40</line>\r\n          <option name=\"timeStamp\" value=\"1\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/workspace.xml	(date 1686225809392)
+@@ -2,37 +2,39 @@
+ <project version="4">
+   <component name="ArtifactsWorkspaceSettings">
+     <artifacts-to-build>
+-      <artifact name="TotoTTMS:war exploded" />
++      <artifact name="TTMS:war exploded" />
+     </artifacts-to-build>
+   </component>
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="a46fec03-b1f0-46ce-bd95-1689786205ed" name="Changes" comment="TotoTTMS">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/ScheduleServlet.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/SeatServlet.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/PlayDAOTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/ScheduleDAOtest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/resourcedaotest.java" afterDir="false" />
++    <list default="true" id="a46fec03-b1f0-46ce-bd95-1689786205ed" name="Changes" comment="Merge remote-tracking branch 'origin/master'">
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0__2_.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_dbutils_1_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/webapp/customer/index1.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0__3_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0__3_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_beanutils_1_8_0__4_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_dbutils_1_3__3_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/druid_1_1_10__3_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/javax_mail_1_6_2.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_j_8_0_32.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/org_json_2_0__3_.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CustomerServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/CustomerServlet.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/PlayServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/PlayServlet.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/StudioServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/StudioServlet.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/PlayDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/PlayDAO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/ScheduleDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/ScheduleDAO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/filter/Filter1Cors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/filter/Filter1Cors.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iPlayDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iPlayDAO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iScheduleDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/idao/iScheduleDAO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/PlaySrv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/PlaySrv.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/ScheduleSrv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/service/ScheduleSrv.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/authority/resource.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/authority/resource.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/studio/play.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/studio/play.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/studio/schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/studio/schedule.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/studio/scheduledetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/studio/scheduledetail.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/user/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/user/employee.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/user/employeedetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/user/employeedetail.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/schedule.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/TTMS.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/scheduleServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/controller/scheduleServlet.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/BasicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xupt/se/ttms/dao/BasicDAO.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/druid.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/druid.properties" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/board.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/board.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/contact.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer/index.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/StudioDAOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/StudioDAOTest.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -49,7 +51,7 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
+-    <option name="PATH_TO_GIT" value="D:\Git\bin\git.exe" />
++    <option name="PATH_TO_GIT" value="D:\Code\Git\bin\git.exe" />
+     <option name="PREVIOUS_COMMIT_AUTHORS">
+       <list>
+         <option value="duhaojie" />
+@@ -57,6 +59,12 @@
+       </list>
+     </option>
+     <option name="PUSH_AUTO_UPDATE" value="true" />
++    <option name="PUSH_TAGS">
++      <GitPushTagMode>
++        <option name="argument" value="--tags" />
++        <option name="title" value="All" />
++      </GitPushTagMode>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="LogFilters">
+@@ -75,6 +83,9 @@
+         <option name="useMavenConfig" value="true" />
+       </MavenGeneralSettings>
+     </option>
++  </component>
++  <component name="ProblemsViewState">
++    <option name="selectedTabId" value="ProjectErrors" />
+   </component>
+   <component name="ProjectId" id="2QJggD4Pn8mXlS0jEaoQXNKRwag" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+@@ -85,45 +96,49 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;D:/GITTTMS02/TotoTTMS/src/main/webapp/WEB-INF/lib&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "DefaultHtmlFileTemplate": "HTML File",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "WebServerToolWindowFactoryState": "false",
++    "git-widget-placeholder": "master",
++    "last_opened_file_path": "E:/Code/Project/TotoTTMS/6.6/TotoTTMS/src/main/webapp/customer",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "project.structure.last.edited": "模块",
++    "project.structure.proportion": "0.0",
++    "project.structure.side.proportion": "0.42988506",
++    "settings.editor.selected.configurable": "editor.preferences.jsOptions",
++    "vue.rearranger.settings.migration": "true"
+   },
+-  &quot;keyToStringList&quot;: {
+-    &quot;DatabaseDriversLRU&quot;: [
+-      &quot;mysql&quot;
++  "keyToStringList": {
++    "DatabaseDriversLRU": [
++      "mysql"
+     ],
+-    &quot;RunConfigurationTargetLRU&quot;: [
+-      &quot;87f76853-c89c-44d0-88c4-c4321d63ba0a&quot;,
+-      &quot;40a2b56c-71b9-418c-bf12-39c55ddefd7a&quot;
++    "RunConfigurationTargetLRU": [
++      "87f76853-c89c-44d0-88c4-c4321d63ba0a",
++      "40a2b56c-71b9-418c-bf12-39c55ddefd7a"
+     ]
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
++      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\customer" />
++      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\login2" />
++      <recent name="C:\Users\27641\IdeaProjects\TotoTTMS\src\main\webapp\admin\authority" />
+       <recent name="D:\GITTTMS02\TotoTTMS\src\main\webapp\WEB-INF\lib" />
+       <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp" />
+-      <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp\customer" />
+-      <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp\css" />
+-      <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\java" />
+     </key>
+     <key name="MoveFile.RECENT_KEYS">
++      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\customer" />
++      <recent name="E:\Code\Project\TotoTTMS\6.6\TotoTTMS\src\main\webapp\simple_login" />
++      <recent name="C:\Users\27641\IdeaProjects\TotoTTMS\src\main\java\xupt\se\ttms\controller" />
+       <recent name="D:\Git_Bash_FrameWork\TotoTTMS\src\main\webapp\images\logo" />
+     </key>
+     <key name="CopyClassDialog.RECENTS_KEY">
+@@ -131,69 +146,71 @@
+       <recent name="xupt.se.util" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Tomcat Server.Tomcat 8.0.50">
+-    <configuration name="PlayDAOTest.delete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TotoTTMS" />
++  <component name="RunManager" selected="Tomcat 服务器.Tomcat 9.0.75">
++    <configuration name="ScheduleDAOtest.getfirst" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TTMS" />
+       <option name="PACKAGE_NAME" value="" />
+-      <option name="MAIN_CLASS_NAME" value="PlayDAOTest" />
+-      <option name="METHOD_NAME" value="delete" />
++      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
++      <option name="METHOD_NAME" value="getfirst" />
+       <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="PlayDAOTest.delete_test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TotoTTMS" />
++    <configuration name="ScheduleDAOtest.insert_ticket" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TTMS" />
+       <option name="PACKAGE_NAME" value="" />
+-      <option name="MAIN_CLASS_NAME" value="PlayDAOTest" />
+-      <option name="METHOD_NAME" value="delete_test" />
++      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
++      <option name="METHOD_NAME" value="insert_ticket" />
+       <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="PlayDAOTest.insert01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TotoTTMS" />
++    <configuration name="ScheduleDAOtest.reselectedid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TTMS" />
+       <option name="PACKAGE_NAME" value="" />
+-      <option name="MAIN_CLASS_NAME" value="PlayDAOTest" />
+-      <option name="METHOD_NAME" value="insert01" />
++      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
++      <option name="METHOD_NAME" value="reselectedid" />
+       <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="PlayDAOTest.update" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TotoTTMS" />
++    <configuration name="StudioDAOTest.queryById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TTMS" />
+       <option name="PACKAGE_NAME" value="" />
+-      <option name="MAIN_CLASS_NAME" value="PlayDAOTest" />
+-      <option name="METHOD_NAME" value="update" />
++      <option name="MAIN_CLASS_NAME" value="StudioDAOTest" />
++      <option name="METHOD_NAME" value="queryById" />
+       <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="ScheduleDAOtest.Query" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TotoTTMS" />
++    <configuration name="StudioDAOTest.selectbyid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TTMS" />
+       <option name="PACKAGE_NAME" value="" />
+-      <option name="MAIN_CLASS_NAME" value="ScheduleDAOtest" />
+-      <option name="METHOD_NAME" value="Query" />
++      <option name="MAIN_CLASS_NAME" value="StudioDAOTest" />
++      <option name="METHOD_NAME" value="selectbyid" />
+       <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="Tomcat 8.0.50" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.50" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
++    <configuration name="Tomcat 9.0.75" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.75" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8" nameIsGenerated="true">
+       <option name="BROWSER_ID" value="37cae5b9-e8b2-4949-9172-aafa37fbc09c" />
++      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
++      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+       <option name="UPDATING_POLICY" value="redeploy-artifacts" />
+       <deployment>
+-        <artifact name="TotoTTMS:war exploded">
++        <artifact name="TTMS:war exploded">
+           <settings>
+             <option name="CONTEXT_PATH" value="/TTMS" />
+           </settings>
+         </artifact>
+       </deployment>
+       <server-settings>
+-        <option name="BASE_DIRECTORY_NAME" value="3d5ccacc-84bf-4ea5-9443-8890716d3c6d" />
++        <option name="BASE_DIRECTORY_NAME" value="1b03ffd3-8908-4957-84b7-9d2934670157" />
+       </server-settings>
+       <predefined_log_file enabled="true" id="Tomcat" />
+       <predefined_log_file enabled="true" id="Tomcat Catalina" />
+@@ -201,7 +218,7 @@
+       <predefined_log_file id="Tomcat Host Manager" />
+       <predefined_log_file id="Tomcat Localhost Access" />
+       <RunnerSettings RunnerId="Debug">
+-        <option name="DEBUG_PORT" value="51156" />
++        <option name="DEBUG_PORT" value="51406" />
+       </RunnerSettings>
+       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+         <option name="USE_ENV_VARIABLES" value="true" />
+@@ -267,25 +284,24 @@
+         <option name="Make" enabled="true" />
+         <option name="BuildArtifacts" enabled="true">
+           <artifact name="TTMS:war exploded" />
+-          <artifact name="TotoTTMS:war exploded" />
+         </option>
+       </method>
+     </configuration>
+     <list>
+-      <item itemvalue="JUnit.PlayDAOTest.delete" />
+-      <item itemvalue="JUnit.PlayDAOTest.delete_test" />
+-      <item itemvalue="JUnit.PlayDAOTest.insert01" />
+-      <item itemvalue="JUnit.PlayDAOTest.update" />
+-      <item itemvalue="JUnit.ScheduleDAOtest.Query" />
+-      <item itemvalue="Tomcat Server.Tomcat 8.0.50" />
++      <item itemvalue="JUnit.ScheduleDAOtest.getfirst" />
++      <item itemvalue="JUnit.ScheduleDAOtest.insert_ticket" />
++      <item itemvalue="JUnit.ScheduleDAOtest.reselectedid" />
++      <item itemvalue="JUnit.StudioDAOTest.queryById" />
++      <item itemvalue="JUnit.StudioDAOTest.selectbyid" />
++      <item itemvalue="Tomcat 服务器.Tomcat 9.0.75" />
+     </list>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="JUnit.PlayDAOTest.update" />
+-        <item itemvalue="JUnit.PlayDAOTest.delete" />
+-        <item itemvalue="JUnit.PlayDAOTest.insert01" />
+-        <item itemvalue="JUnit.ScheduleDAOtest.Query" />
+-        <item itemvalue="JUnit.PlayDAOTest.delete_test" />
++        <item itemvalue="JUnit.ScheduleDAOtest.getfirst" />
++        <item itemvalue="JUnit.ScheduleDAOtest.reselectedid" />
++        <item itemvalue="JUnit.ScheduleDAOtest.insert_ticket" />
++        <item itemvalue="JUnit.StudioDAOTest.selectbyid" />
++        <item itemvalue="JUnit.StudioDAOTest.queryById" />
+       </list>
+     </recent_temporary>
+   </component>
+@@ -302,6 +318,26 @@
+       <workItem from="1685330069310" duration="2092000" />
+       <workItem from="1685404461346" duration="7794000" />
+       <workItem from="1685545084866" duration="35899000" />
++      <workItem from="1685988073131" duration="929000" />
++      <workItem from="1685989274958" duration="727000" />
++      <workItem from="1685990041507" duration="2000" />
++      <workItem from="1686010200096" duration="2349000" />
++      <workItem from="1686012562508" duration="2443000" />
++      <workItem from="1686015031011" duration="1036000" />
++      <workItem from="1686018089542" duration="750000" />
++      <workItem from="1686037877758" duration="6437000" />
++      <workItem from="1686044391658" duration="17663000" />
++      <workItem from="1686078618944" duration="12412000" />
++      <workItem from="1686091441923" duration="1609000" />
++      <workItem from="1686095836044" duration="176000" />
++      <workItem from="1686096077648" duration="22000" />
++      <workItem from="1686096185131" duration="450000" />
++      <workItem from="1686096781744" duration="2962000" />
++      <workItem from="1686099824179" duration="13601000" />
++      <workItem from="1686141582819" duration="14973000" />
++      <workItem from="1686157729806" duration="19000" />
++      <workItem from="1686157760980" duration="26411000" />
++      <workItem from="1686203891059" duration="18988000" />
+     </task>
+     <task id="LOCAL-00001" summary="TotoTTMS">
+       <created>1685079785094</created>
+@@ -429,7 +465,126 @@
+       <option name="project" value="LOCAL" />
+       <updated>1685586968756</updated>
+     </task>
+-    <option name="localTasksCounter" value="19" />
++    <task id="LOCAL-00019" summary="TotoTTMS">
++      <created>1685988491206</created>
++      <option name="number" value="00019" />
++      <option name="presentableId" value="LOCAL-00019" />
++      <option name="project" value="LOCAL" />
++      <updated>1685988491206</updated>
++    </task>
++    <task id="LOCAL-00020" summary="TotoTTMS">
++      <created>1685989590923</created>
++      <option name="number" value="00020" />
++      <option name="presentableId" value="LOCAL-00020" />
++      <option name="project" value="LOCAL" />
++      <updated>1685989590923</updated>
++    </task>
++    <task id="LOCAL-00021" summary="TotoTTMS">
++      <created>1685989818902</created>
++      <option name="number" value="00021" />
++      <option name="presentableId" value="LOCAL-00021" />
++      <option name="project" value="LOCAL" />
++      <updated>1685989818902</updated>
++    </task>
++    <task id="LOCAL-00022" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686014443255</created>
++      <option name="number" value="00022" />
++      <option name="presentableId" value="LOCAL-00022" />
++      <option name="project" value="LOCAL" />
++      <updated>1686014443255</updated>
++    </task>
++    <task id="LOCAL-00023" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686018614251</created>
++      <option name="number" value="00023" />
++      <option name="presentableId" value="LOCAL-00023" />
++      <option name="project" value="LOCAL" />
++      <updated>1686018614251</updated>
++    </task>
++    <task id="LOCAL-00024" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686018646984</created>
++      <option name="number" value="00024" />
++      <option name="presentableId" value="LOCAL-00024" />
++      <option name="project" value="LOCAL" />
++      <updated>1686018646984</updated>
++    </task>
++    <task id="LOCAL-00025" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686098738066</created>
++      <option name="number" value="00025" />
++      <option name="presentableId" value="LOCAL-00025" />
++      <option name="project" value="LOCAL" />
++      <updated>1686098738066</updated>
++    </task>
++    <task id="LOCAL-00026" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686101075887</created>
++      <option name="number" value="00026" />
++      <option name="presentableId" value="LOCAL-00026" />
++      <option name="project" value="LOCAL" />
++      <updated>1686101075887</updated>
++    </task>
++    <task id="LOCAL-00027" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686101847109</created>
++      <option name="number" value="00027" />
++      <option name="presentableId" value="LOCAL-00027" />
++      <option name="project" value="LOCAL" />
++      <updated>1686101847109</updated>
++    </task>
++    <task id="LOCAL-00028" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686104906098</created>
++      <option name="number" value="00028" />
++      <option name="presentableId" value="LOCAL-00028" />
++      <option name="project" value="LOCAL" />
++      <updated>1686104906098</updated>
++    </task>
++    <task id="LOCAL-00029" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686157862285</created>
++      <option name="number" value="00029" />
++      <option name="presentableId" value="LOCAL-00029" />
++      <option name="project" value="LOCAL" />
++      <updated>1686157862285</updated>
++    </task>
++    <task id="LOCAL-00030" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686157877635</created>
++      <option name="number" value="00030" />
++      <option name="presentableId" value="LOCAL-00030" />
++      <option name="project" value="LOCAL" />
++      <updated>1686157877635</updated>
++    </task>
++    <task id="LOCAL-00031" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
++      <created>1686158205382</created>
++      <option name="number" value="00031" />
++      <option name="presentableId" value="LOCAL-00031" />
++      <option name="project" value="LOCAL" />
++      <updated>1686158205382</updated>
++    </task>
++    <task id="LOCAL-00032" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
++      <created>1686158807516</created>
++      <option name="number" value="00032" />
++      <option name="presentableId" value="LOCAL-00032" />
++      <option name="project" value="LOCAL" />
++      <updated>1686158807516</updated>
++    </task>
++    <task id="LOCAL-00033" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
++      <created>1686158826959</created>
++      <option name="number" value="00033" />
++      <option name="presentableId" value="LOCAL-00033" />
++      <option name="project" value="LOCAL" />
++      <updated>1686158826959</updated>
++    </task>
++    <task id="LOCAL-00034" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html">
++      <created>1686158869666</created>
++      <option name="number" value="00034" />
++      <option name="presentableId" value="LOCAL-00034" />
++      <option name="project" value="LOCAL" />
++      <updated>1686158869666</updated>
++    </task>
++    <task id="LOCAL-00035" summary="Merge remote-tracking branch 'origin/master'">
++      <created>1686223321084</created>
++      <option name="number" value="00035" />
++      <option name="presentableId" value="LOCAL-00035" />
++      <option name="project" value="LOCAL" />
++      <updated>1686223321084</updated>
++    </task>
++    <option name="localTasksCounter" value="36" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -448,18 +603,9 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="TotoTTMS" />
+-    <option name="LAST_COMMIT_MESSAGE" value="TotoTTMS" />
+-  </component>
+-  <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/main/java/xupt/se/ttms/model/Customer.java</url>
+-          <line>40</line>
+-          <option name="timeStamp" value="1" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
++    <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/main/webapp/customer/register.html" />
++    <MESSAGE value="Merge remote-tracking branch 'origin/master'" />
++    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/master'" />
+   </component>
+   <component name="XSLT-Support.FileAssociations.UIState">
+     <expand />
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"TotoTTMS\" />\r\n        <module name=\"TTMS\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/compiler.xml	(date 1686223362819)
+@@ -6,9 +6,9 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="TotoTTMS" />
+         <module name="TTMS" />
+       </profile>
+     </annotationProcessing>
++    <bytecodeTargetLevel target="8" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/libraries/commons_beanutils_1_8_0__2_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/commons_beanutils_1_8_0__2_.xml b/.idea/libraries/commons_beanutils_1_8_0__2_.xml
+new file mode 100644
+--- /dev/null	(date 1686223362838)
++++ b/.idea/libraries/commons_beanutils_1_8_0__2_.xml	(date 1686223362838)
+@@ -0,0 +1,14 @@
++<component name="libraryTable">
++  <library name="commons-beanutils-1.8.0 (2)">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/mysql-connector-j-8.0.32.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/commons_dbutils_1_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/commons_dbutils_1_3.xml b/.idea/libraries/commons_dbutils_1_3.xml
+new file mode 100644
+--- /dev/null	(date 1686223362843)
++++ b/.idea/libraries/commons_dbutils_1_3.xml	(date 1686223362843)
+@@ -0,0 +1,14 @@
++<component name="libraryTable">
++  <library name="commons-dbutils-1.3">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/mysql-connector-j-8.0.32.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/sqldialects.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/sqldialects.xml b/.idea/sqldialects.xml
+new file mode 100644
+--- /dev/null	(date 1686223362856)
++++ b/.idea/sqldialects.xml	(date 1686223362856)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="SqlDialectMappings">
++    <file url="PROJECT" dialect="MySQL" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/libraries/commons_beanutils_1_8_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"commons-beanutils-1.8.0\">\r\n    <CLASSES>\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/\" />\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/\" />\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/\" />\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/commons_beanutils_1_8_0.xml b/.idea/libraries/commons_beanutils_1_8_0.xml
+--- a/.idea/libraries/commons_beanutils_1_8_0.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/libraries/commons_beanutils_1_8_0.xml	(date 1686223362824)
+@@ -4,9 +4,14 @@
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/mysql-connector-j-8.0.32.jar!/" />
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+-    <SOURCES />
++    <SOURCES>
++      <root url="file://$PROJECT_DIR$/src/main/java" />
++      <root url="file://$PROJECT_DIR$/src/test/java" />
++    </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: src/main/java/xupt/se/ttms/dao/BasicDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package xupt.se.ttms.dao;\r\n\r\n\r\nimport org.apache.commons.dbutils.QueryRunner;\r\nimport org.apache.commons.dbutils.handlers.BeanHandler;\r\nimport org.apache.commons.dbutils.handlers.BeanListHandler;\r\nimport org.apache.commons.dbutils.handlers.ScalarHandler;\r\nimport xupt.se.util.JDBCUtilsByDruid;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.SQLException;\r\nimport java.util.List;\r\n\r\n/**\r\n * @author\r\n * @version 1.0\r\n * 开发BasicDAO , 是其他DAO的父类\r\n */\r\npublic class BasicDAO<T> { //泛型指定具体类型\r\n\r\n    private QueryRunner qr =  new QueryRunner();\r\n   // private MySqlDeleteStatement ds = new MySqlDeleteStatement();\r\n\r\n    //开发通用的dml方法, 针对任意的表\r\n    public int update(String sql, Object... parameters) throws SQLException {\r\n\r\n        Connection connection = null;\r\n      //  System.out.println(\"11111_______________\");\r\n\r\n        try {\r\n            //这里从数据库连接池获取connection\r\n            //说明: 每次从连接池中取出Connection , 不能保证是同一个\r\n            //1目前已经是从当前线程关联的ThreadLocal获取的connection\r\n            //2.可以保证是同一个连接(在同一个线程/同一个请求)\r\n            connection = JDBCUtilsByDruid.getConnection();\r\n            System.out.println(connection);\r\n            int update = qr.update(connection, sql, parameters);\r\n\r\n            System.out.println(\"update\");\r\n            return  update;\r\n        } catch (SQLException e) {\r\n            throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出\r\n        }\r\n\r\n    }\r\n\r\n    //返回多个对象(即查询的结果是多行), 针对任意表\r\n\r\n    /**\r\n     *\r\n     * @param sql sql 语句，可以有 ?\r\n     * @param clazz 传入一个类的Class对象 比如 Actor.class\r\n     * @param parameters 传入 ? 的具体的值，可以是多个\r\n     * @return 根据Actor.class 返回对应的 ArrayList 集合\r\n     */\r\n    public List<T> queryMulti(String sql, Class<T> clazz, Object... parameters) {\r\n\r\n        Connection connection = null;\r\n        try {\r\n            connection = JDBCUtilsByDruid.getConnection();\r\n            return qr.query(connection, sql, new BeanListHandler<T>(clazz), parameters);\r\n\r\n        } catch (SQLException e) {\r\n            throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出\r\n        }\r\n\r\n    }\r\n\r\n    //查询单行结果 的通用方法\r\n    public T querySingle(String sql, Class<T> clazz, Object... parameters) {\r\n\r\n        Connection connection = null;\r\n        try {\r\n            connection = JDBCUtilsByDruid.getConnection();\r\n            return  qr.query(connection, sql, new BeanHandler<T>(clazz), parameters);\r\n\r\n        } catch (SQLException e) {\r\n            System.out.println(\"4444\");\r\n            throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出\r\n        }\r\n    }\r\n\r\n    //查询单行单列的方法,即返回单值的方法\r\n\r\n    public Object queryScalar(String sql, Object... parameters) {\r\n\r\n        Connection connection = null;\r\n        try {\r\n            connection = JDBCUtilsByDruid.getConnection();\r\n            return  qr.query(connection, sql, new ScalarHandler(), parameters);\r\n\r\n        } catch (SQLException e) {\r\n            throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出\r\n        }\r\n    }\r\n\r\n    public  Object delect(String sql , Object ... parameters){\r\n        Connection connection = null;\r\n\r\n        connection = JDBCUtilsByDruid.getConnection();\r\n\r\n       // Statement statement = connection.createStatement(); //创建Statement对象\r\n       // return  connection.prepareStatement(sql,new ScalarHandler(),parameters);\r\n\r\n        return 1;\r\n        }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/xupt/se/ttms/dao/BasicDAO.java b/src/main/java/xupt/se/ttms/dao/BasicDAO.java
+--- a/src/main/java/xupt/se/ttms/dao/BasicDAO.java	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/main/java/xupt/se/ttms/dao/BasicDAO.java	(date 1686223362829)
+@@ -33,10 +33,7 @@
+             //1目前已经是从当前线程关联的ThreadLocal获取的connection
+             //2.可以保证是同一个连接(在同一个线程/同一个请求)
+             connection = JDBCUtilsByDruid.getConnection();
+-            System.out.println(connection);
+             int update = qr.update(connection, sql, parameters);
+-
+-            System.out.println("update");
+             return  update;
+         } catch (SQLException e) {
+             throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出
+@@ -59,7 +56,6 @@
+         try {
+             connection = JDBCUtilsByDruid.getConnection();
+             return qr.query(connection, sql, new BeanListHandler<T>(clazz), parameters);
+-
+         } catch (SQLException e) {
+             throw  new RuntimeException(e); //将编译异常->运行异常 ,抛出
+         }
+Index: .idea/libraries/commons_beanutils_1_8_0__3_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"commons-beanutils-1.8.0 (3)\">\r\n    <CLASSES>\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/\" />\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/\" />\r\n      <root url=\"jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/commons_beanutils_1_8_0__3_.xml b/.idea/libraries/commons_beanutils_1_8_0__3_.xml
+--- a/.idea/libraries/commons_beanutils_1_8_0__3_.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/libraries/commons_beanutils_1_8_0__3_.xml	(date 1686223362833)
+@@ -4,6 +4,9 @@
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-dbutils-1.3.jar!/" />
+       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/druid-1.1.10.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/mysql-connector-j-8.0.32.jar!/" />
++      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/org.json-2.0.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\r\n    <data-source source=\"LOCAL\" name=\"@localhost\" uuid=\"855ea93d-9f7a-4d42-a4a1-3137ed28b900\">\r\n      <driver-ref>mysql.8</driver-ref>\r\n      <synchronize>true</synchronize>\r\n      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>\r\n      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>\r\n      <working-dir>$ProjectFileDir$</working-dir>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+--- a/.idea/dataSources.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/dataSources.xml	(date 1686223362849)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="@localhost" uuid="855ea93d-9f7a-4d42-a4a1-3137ed28b900">
++    <data-source source="LOCAL" name="@localhost" uuid="4c5c7f8d-b615-4b26-b056-4e7cf3707cf0">
+       <driver-ref>mysql.8</driver-ref>
+       <synchronize>true</synchronize>
+       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"http://maven.aliyun.com/nexus/content/groups/public/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"https://repo.maven.apache.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+--- a/.idea/jarRepositories.xml	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/.idea/jarRepositories.xml	(date 1686223362870)
+@@ -4,12 +4,12 @@
+     <remote-repository>
+       <option name="id" value="central" />
+       <option name="name" value="Central Repository" />
+-      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
+     </remote-repository>
+     <remote-repository>
+       <option name="id" value="central" />
+       <option name="name" value="Central Repository" />
+-      <option name="url" value="https://repo.maven.apache.org/maven2" />
++      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
+     </remote-repository>
+     <remote-repository>
+       <option name="id" value="central" />
+Index: src/test/java/StudioDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.junit.Test;\r\nimport xupt.se.ttms.dao.StudioDAO;\r\nimport xupt.se.ttms.idao.iStudioDAO;\r\nimport xupt.se.ttms.model.Studio;\r\n\r\nimport java.sql.SQLException;\r\nimport java.util.List;\r\n\r\n/**\r\n * @author 杜浩杰\r\n * @version 1.0\r\n */\r\npublic class StudioDAOTest {\r\n\r\n    private iStudioDAO iStudioDAO = new StudioDAO();\r\n\r\n    /**\r\n     * (int ID, String name, int rowCount, int colCount, String intro)\r\n     */\r\n\r\n    @Test\r\n    public void inster01() throws SQLException {\r\n        System.out.println(iStudioDAO.insert(new Studio(7,\"火神殿\",11,11,\"炉子热\")));\r\n    }\r\n\r\n    @Test\r\n    public void queryById(){\r\n        System.out.println(iStudioDAO.QueryByid(3));\r\n\r\n      //  System.out.println(iStudioDAO.select(\"1号厅\"));\r\n      //  xupt.se.ttms.model.Studio@52525845\r\n    }\r\n\r\n    @Test\r\n    public void QUERYAll(){\r\n        List<Studio> studios = iStudioDAO.QueryALL();\r\n        for (Studio studio : studios) {\r\n            // 执行操作\r\n            System.out.println(studio);\r\n        }\r\n\r\n        System.out.println(iStudioDAO.QueryALL());\r\n    }\r\n\r\n    @Test\r\n    public void Count(){\r\n        System.out.println(iStudioDAO.Count());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/StudioDAOTest.java b/src/test/java/StudioDAOTest.java
+--- a/src/test/java/StudioDAOTest.java	(revision 4f197b8f576134ca9079ad4471212e4f3bfa0d8c)
++++ b/src/test/java/StudioDAOTest.java	(date 1686223362861)
+@@ -25,12 +25,18 @@
+ 
+     @Test
+     public void queryById(){
+-        System.out.println(iStudioDAO.QueryByid(3));
++        System.out.println(iStudioDAO.QueryByid(4));
+ 
+       //  System.out.println(iStudioDAO.select("1号厅"));
+       //  xupt.se.ttms.model.Studio@52525845
+     }
+ 
++//    @Test
++//    public void selectbyid()
++//    {
++//        System.out.println(iStudioDAO.selectbyid(4));
++//    }
++
+     @Test
+     public void QUERYAll(){
+         List<Studio> studios = iStudioDAO.QueryALL();
